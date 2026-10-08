@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>自己紹介タイマー</title>
+<style>
+:root{
+  --bg:#10151f; --panel:#1a2230; --panel2:#222c3e; --line:#2f3c53;
+  --text:#eef2f8; --muted:#8fa0ba; --accent:#4da3ff; --ok:#3ecf8e;
+  --warn:#ffb020; --danger:#ff4d5e;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
+  font-family:-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+input,select{font:inherit;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+input[type=checkbox]{width:20px;height:20px;accent-color:var(--ok);cursor:pointer}
+.btn{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 14px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#04101f;font-weight:700}
+.btn.danger{color:var(--danger)}
+.btn.sm{padding:4px 10px;font-size:.85rem}
+.hidden{display:none!important}
+
+/* ---------- setup ---------- */
+#setup{max-width:1100px;margin:0 auto;padding:24px 20px 80px}
+#setup h1{font-size:1.5rem;margin:0 0 4px}
+#setup .sub{color:var(--muted);margin:0 0 20px;font-size:.9rem}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+.card h2{font-size:1rem;margin:0 0 12px;color:var(--muted);font-weight:600}
+.row{display:flex;flex-wrap:wrap;gap:14px 20px;align-items:end}
+.row label{display:flex;flex-direction:column;gap:4px;font-size:.8rem;color:var(--muted)}
+.row label input,.row label select{font-size:1rem}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.toolbar .spacer{flex:1}
+.tablewrap{overflow:auto;max-height:46vh;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%}
+th,td{padding:4px 6px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{position:sticky;top:0;background:var(--panel2);font-size:.8rem;color:var(--muted);z-index:1}
+td input[type=text]{width:100%;min-width:90px;background:transparent;border-color:transparent}
+td input[type=text]:hover,td input[type=text]:focus{border-color:var(--line);background:var(--panel2)}
+tr.absent td{opacity:.4}
+tr.absent td:first-child,tr.absent td:nth-child(2){opacity:1}
+td.num{color:var(--muted);width:36px;text-align:right}
+.empty{color:var(--muted);padding:30px;text-align:center}
+.startbar{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(transparent,var(--bg) 40%);padding:30px 20px 18px;text-align:center}
+.startbar .btn{font-size:1.2rem;padding:12px 40px}
+.stat{color:var(--muted);font-size:.9rem}
+
+/* ---------- run ---------- */
+#run{height:100vh;display:grid;grid-template-columns:1fr 340px;grid-template-rows:auto 1fr;overflow:hidden}
+#run header{grid-column:1/3;position:relative;text-align:center;padding:14px 20px 4px}
+#run header h1{margin:0;font-size:clamp(1.4rem,3.2vh,2.4rem);letter-spacing:.1em}
+#elapsed{position:absolute;right:18px;top:12px;color:var(--muted);font-size:.95rem;font-variant-numeric:tabular-nums}
+#elapsed b{color:var(--text);font-size:1.15rem;margin-left:4px}
+#stage{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 20px;min-width:0;position:relative}
+#timeup{height:min(9vh,70px);display:flex;align-items:center}
+#timeup span{background:var(--danger);color:#fff;font-weight:800;font-size:min(6vh,3rem);padding:.1em .8em;border-radius:12px;
+  transform:rotate(-3deg);box-shadow:0 6px 24px rgba(255,77,94,.5);animation:pop .35s ease-out}
+@keyframes pop{0%{transform:scale(2) rotate(-12deg);opacity:0}100%{transform:scale(1) rotate(-3deg);opacity:1}}
+#nameBig{font-size:min(12vh,7vw);font-weight:800;text-align:center;line-height:1.2;word-break:break-all;margin:.1em 0}
+#nameBig small{font-size:.55em;font-weight:600;margin-left:.2em;color:var(--muted)}
+#count{font-size:min(38vh,24vw);font-weight:800;line-height:1;font-variant-numeric:tabular-nums;margin:.02em 0;transition:color .2s}
+#count.low{color:var(--warn)}
+#count.crit{color:var(--danger);animation:pulse .5s infinite alternate}
+#count.over{color:var(--danger)}
+@keyframes pulse{to{transform:scale(1.06)}}
+#bar{width:min(70%,900px);height:10px;background:var(--panel2);border-radius:5px;overflow:hidden;margin:10px 0 18px}
+#bar i{display:block;height:100%;width:100%;background:var(--ok);transform-origin:left;transition:background .2s}
+#bar.low i{background:var(--warn)} #bar.crit i,#bar.over i{background:var(--danger)}
+#startBtn{font-size:min(4.5vh,1.8rem);padding:.45em 1.8em;border-radius:14px}
+#startBtn:disabled{opacity:.4;cursor:default}
+#startBtn kbd{font-size:.6em;opacity:.7;margin-left:.6em;border:1px solid currentColor;border-radius:5px;padding:0 .4em}
+.minibar{position:absolute;left:14px;bottom:12px;display:flex;gap:8px}
+#side{background:var(--panel);border-left:1px solid var(--line);padding:12px 14px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-top:6px}
+#side h3{margin:8px 0 2px;font-size:.8rem;color:var(--muted);font-weight:600}
+.q{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;
+  background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-height:44px}
+.q:hover{border-color:var(--accent)}
+.q .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.q .lb{font-size:.7rem;color:var(--muted);white-space:nowrap}
+.q.next{background:#18365a;border-color:var(--accent);padding:14px 14px;font-size:1.25rem;font-weight:700;flex-direction:column;align-items:flex-start;gap:2px}
+.q.next .lb{color:#9cc9ff;font-size:.8rem;font-weight:600}
+.sk{display:flex;align-items:center;gap:8px;background:var(--panel2);border:1px solid #6b4a1c;border-radius:10px;padding:6px 10px}
+.sk .q{border:0;padding:4px 2px;min-height:0;background:transparent;flex:1}
+.sk .q:hover{color:var(--accent)}
+.more{color:var(--muted);font-size:.8rem;text-align:center}
+
+/* ---------- mobile ---------- */
+#run{height:100dvh}
+@media (max-width:800px) and (orientation:portrait){
+  #setup{padding:14px 12px 90px}
+  input,select{font-size:16px}
+  .row{gap:10px 12px}
+  .row label input[type=text]{width:100%!important}
+  .startbar .btn{width:100%}
+  #run{grid-template-columns:1fr;grid-template-rows:auto 58dvh minmax(0,1fr)}
+  #run header{grid-column:1;padding:10px 12px 2px}
+  #run header h1{font-size:1.2rem;padding-right:84px;text-align:left}
+  #elapsed{top:10px;right:12px;font-size:.75rem}
+  #elapsed b{font-size:.95rem}
+  #stage{padding:4px 12px}
+  #timeup{height:6dvh}
+  #timeup span{font-size:min(4dvh,1.5rem)}
+  #nameBig{font-size:min(7dvh,9vw)}
+  #count{font-size:min(24dvh,42vw)}
+  #bar{width:90%;margin:6px 0 10px}
+  #startBtn{font-size:1.2rem;padding:.55em 1.2em;width:92%}
+  #startBtn kbd{display:none}
+  .minibar{position:static;margin-top:10px;flex-wrap:wrap;justify-content:center}
+  #side{border-left:0;border-top:1px solid var(--line);margin-top:0;padding:10px 12px}
+  .q.next{font-size:1.1rem;padding:10px 12px}
+}
+@media (max-height:520px) and (orientation:landscape){
+  #run{grid-template-columns:1fr 220px}
+  #run header{padding:6px 12px 0}
+  #run header h1{font-size:1rem}
+  #elapsed{top:6px;font-size:.7rem}
+  #bar{margin:4px 0 8px}
+  #startBtn{font-size:1rem}
+  .minibar{bottom:6px}
+  .q{min-height:36px;padding:5px 10px}
+  .q.next{padding:8px 10px;font-size:1rem}
+}
+
+/* ---------- modal ---------- */
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:50}
+#modal .box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px 28px;min-width:320px;text-align:center}
+#modal p{font-size:1.2rem;margin:0 0 18px}
+#modal .btns{display:flex;gap:12px;justify-content:center}
+</style>
+</head>
+<body>
+
+<!-- ============ SETUP ============ -->
+<div id="setup">
+  <h1>自己紹介タイマー</h1>
+  <p class="sub">CSVを読み込む → 出欠・並び順を確認 → 「本番画面へ」。本番ではスペースキーでスタートします。</p>
+
+  <div class="card">
+    <h2>設定</h2>
+    <div class="row">
+      <label>タイトル<input id="setTitle" type="text" style="width:260px"></label>
+      <label>発表時間（秒）<input id="setDur" type="number" min="5" max="3600" style="width:100px"></label>
+      <label>標準の敬称<input id="setHon" type="text" style="width:100px"></label>
+      <label>名前のフィールド<select id="setNameCol"></select></label>
+      <label>敬称のフィールド<select id="setTitleCol"></select></label>
+      <label><span>　</span><button class="btn" id="muteBtn" type="button">音: ON</button></label>
+      <label><span>　</span><button class="btn" id="testSoundBtn" type="button">音を試す</button></label>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>参加者リスト <span class="stat" id="stat"></span></h2>
+    <div class="toolbar">
+      <input id="file" type="file" accept=".csv,.txt,text/csv" class="hidden">
+      <button class="btn primary" id="loadBtn" type="button">CSVを読み込む…</button>
+      <button class="btn" id="sampleBtn" type="button">サンプルを読み込む</button>
+      <button class="btn" id="exportBtn" type="button">CSVに書き出す</button>
+      <span style="width:12px"></span>
+      <label class="stat">並べ替え
+        <select id="sortCol"></select>
+      </label>
+      <select id="sortDir"><option value="1">昇順</option><option value="-1">降順</option></select>
+      <span class="spacer"></span>
+      <button class="btn sm" id="addRowBtn" type="button">＋ 行を追加</button>
+      <button class="btn sm" id="addColBtn" type="button">＋ 列を追加</button>
+      <button class="btn sm" id="allPresentBtn" type="button">全員出席</button>
+      <button class="btn sm danger" id="clearBtn" type="button">全消去</button>
+    </div>
+    <div class="tablewrap"><table id="tbl"></table></div>
+    <p class="stat" style="margin-bottom:0">1行目をヘッダー行として読み込みます。文字コードは UTF-8 / Shift_JIS を自動判別。セルはクリックして直接編集できます。</p>
+  </div>
+
+  <div class="startbar"><button class="btn primary" id="goBtn" type="button">本番画面へ ▶</button></div>
+</div>
+
+<!-- ============ RUN ============ -->
+<div id="run" class="hidden">
+  <header>
+    <h1 id="runTitle"></h1>
+    <div id="elapsed">経過 <b id="elapsedVal">0:00</b></div>
+  </header>
+  <section id="stage">
+    <div id="timeup"></div>
+    <div id="nameBig"></div>
+    <div id="count">45</div>
+    <div id="bar"><i></i></div>
+    <button id="startBtn" class="btn primary" type="button"></button>
+    <div class="minibar">
+      <button class="btn sm" id="backBtn" type="button">← 設定に戻る</button>
+      <button class="btn sm" id="resetBtn" type="button">最初からやり直す</button>
+      <button class="btn sm" id="fsBtn" type="button">全画面</button>
+    </div>
+  </section>
+  <aside id="side"></aside>
+</div>
+
+<div id="modal" class="hidden"></div>
+
+<script>
+"use strict";
+/* =================== state =================== */
+const LS_KEY = "speechTimer.v1";
+const $ = id => document.getElementById(id);
+let uid = 1;
+const newId = () => "p" + (uid++);
+
+const state = {
+  view: "setup",
+  muted: false,
+  s: { title: "同窓会", dur: 45, hon: "さん", nameCol: 0, titleCol: -1, sortCol: -1, sortDir: 1 },
+  cols: ["名前", "敬称"],
+  people: [],
+  run: freshRun()
+};
+function freshRun() {
+  return { queue: [], skipped: [], done: [], cur: null, endAt: 0, dur: 0, startedAt: 0 };
+}
+
+function save() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify({ s: state.s, cols: state.cols, people: state.people, run: state.run, view: state.view, muted: state.muted, uid })); } catch (e) {}
+}
+function load() {
+  try {
+    const d = JSON.parse(localStorage.getItem(LS_KEY) || "null");
+    if (!d) return;
+    Object.assign(state.s, d.s); state.cols = d.cols; state.people = d.people;
+    state.run = Object.assign(freshRun(), d.run); state.view = d.view || "setup";
+    state.muted = !!d.muted; uid = d.uid || uid;
+  } catch (e) {}
+}
+
+/* =================== CSV =================== */
+function parseCSV(text) {
+  if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+  const rows = []; let row = [], f = "", q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) {
+      if (c === '"') { if (text[i + 1] === '"') { f += '"'; i++; } else q = false; }
+      else f += c;
+    } else if (c === '"') q = true;
+    else if (c === ",") { row.push(f); f = ""; }
+    else if (c === "\n" || c === "\r") {
+      if (c === "\r" && text[i + 1] === "\n") i++;
+      row.push(f); f = ""; rows.push(row); row = [];
+    } else f += c;
+  }
+  if (f !== "" || row.length) { row.push(f); rows.push(row); }
+  return rows.filter(r => r.some(x => x.trim() !== ""));
+}
+function toCSV(rows) {
+  return rows.map(r => r.map(v => /[",\r\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v).join(",")).join("\r\n");
+}
+function decodeBuffer(buf) {
+  try { return new TextDecoder("utf-8", { fatal: true }).decode(buf); }
+  catch (e) { return new TextDecoder("shift_jis").decode(buf); }
+}
+function importRows(rows) {
+  if (rows.length < 1) return alert("データがありません");
+  const header = rows[0].map(h => h.trim());
+  const n = header.length;
+  state.cols = header.map((h, i) => h || ("列" + (i + 1)));
+  state.people = rows.slice(1).map(r => {
+    const vals = Array.from({ length: n }, (_, i) => (r[i] || "").trim());
+    return { id: newId(), vals, present: true };
+  });
+  const find = re => state.cols.findIndex(h => re.test(h));
+  const ni = find(/^(氏名|名前|お名前|name)$/i);
+  state.s.nameCol = ni >= 0 ? ni : 0;
+  state.s.titleCol = find(/^(敬称|呼称|title|honorific)$/i);
+  state.s.sortCol = -1;
+  state.run = freshRun();
+  render();
+}
+const SAMPLE = `ふりがな,名前,敬称,クラス,卒業年
+あおき,青木 太郎,,3-A,2001
+いとう,伊藤 花子,さん,3-B,2001
+うえだ,上田 健,先生,担任,1998
+えのもと,榎本 美咲,,3-A,2001
+おかだ,岡田 浩二,くん,3-C,2001
+かとう,加藤 由美,,3-B,2001
+きむら,木村 大輔,,3-C,2001
+くどう,工藤 まり,ちゃん,3-A,2001
+けいた,佐藤 圭太,,3-B,2001
+こじま,小島 理恵,,3-C,2001
+さいとう,斎藤 誠,,3-A,2001
+しみず,清水 彩,,3-B,2001`;
+
+/* =================== helpers =================== */
+function h(tag, props, ...kids) {
+  const e = document.createElement(tag);
+  for (const k in props || {}) {
+    if (k === "class") e.className = props[k];
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), props[k]);
+    else if (k === "checked" || k === "value" || k === "disabled") e[k] = props[k];
+    else e.setAttribute(k, props[k]);
+  }
+  kids.flat().forEach(k => e.append(k));
+  return e;
+}
+function byId(id) { return state.people.find(p => p.id === id); }
+function nameOf(p) {
+  const s = state.s;
+  const name = (p.vals[s.nameCol] || "").trim() || "(名前なし)";
+  const t = s.titleCol >= 0 ? (p.vals[s.titleCol] || "").trim() : "";
+  return { name, hon: t || s.hon };
+}
+function fullName(p) { const n = nameOf(p); return n.name + n.hon; }
+function fmtClock(sec) {
+  sec = Math.max(0, Math.floor(sec));
+  const h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60;
+  return (h ? h + ":" + String(m).padStart(2, "0") : m) + ":" + String(s).padStart(2, "0");
+}
+function fillSelect(sel, options, value) {
+  sel.innerHTML = "";
+  options.forEach(([v, label]) => sel.append(h("option", { value: v }, label)));
+  sel.value = String(value);
+}
+
+/* =================== setup view =================== */
+function renderSetup() {
+  const s = state.s;
+  $("setTitle").value = s.title; $("setDur").value = s.dur; $("setHon").value = s.hon;
+  const colOpts = state.cols.map((c, i) => [i, c]);
+  fillSelect($("setNameCol"), colOpts, s.nameCol);
+  fillSelect($("setTitleCol"), [[-1, "（なし：標準の敬称）"], ...colOpts], s.titleCol);
+  fillSelect($("sortCol"), [[-1, "（そのまま）"], ...colOpts], s.sortCol);
+  $("sortDir").value = String(s.sortDir);
+  $("muteBtn").textContent = state.muted ? "音: OFF" : "音: ON";
+  renderTable();
+}
+function renderTable() {
+  const t = $("tbl"); t.innerHTML = "";
+  const present = state.people.filter(p => p.present).length;
+  $("stat").textContent = `（出席 ${present} / 全 ${state.people.length} 人）`;
+  if (!state.people.length) {
+    t.append(h("tr", {}, h("td", { class: "empty" }, "リストが空です。CSVを読み込むか、行を追加してください。")));
+    return;
+  }
+  const head = h("tr", {}, h("th", {}, "出席"), h("th", {}, "#"),
+    state.cols.map(c => h("th", {}, c)), h("th", {}, ""));
+  t.append(head);
+  let n = 0;
+  state.people.forEach(p => {
+    if (p.present) n++;
+    const tr = h("tr", { class: p.present ? "" : "absent" },
+      h("td", {}, h("input", { type: "checkbox", checked: p.present, title: "出席/欠席",
+        onchange: e => { p.present = e.target.checked; save(); renderTable(); } })),
+      h("td", { class: "num" }, p.present ? String(n) : "－"),
+      p.vals.map((v, i) => h("td", {}, h("input", { type: "text", value: v,
+        oninput: e => { p.vals[i] = e.target.value; save(); } }))),
+      h("td", {}, h("button", { class: "btn sm danger", type: "button", title: "この行を削除",
+        onclick: () => { state.people = state.people.filter(x => x !== p); save(); renderTable(); } }, "✕")));
+    t.append(tr);
+  });
+}
+function applySort() {
+  const { sortCol: c, sortDir: d } = state.s;
+  if (c < 0) return;
+  const cmp = (a, b) => {
+    const x = a.vals[c] || "", y = b.vals[c] || "";
+    if (!x && y) return 1; if (x && !y) return -1;
+    return x.localeCompare(y, "ja", { numeric: true }) * d;
+  };
+  state.people.sort(cmp);
+}
+
+/* =================== audio =================== */
+let ctx = null, bus = null, noiseBuf = null, applauseBuf = null;
+function audio() {
+  if (!ctx) {
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const sr = ctx.sampleRate;
+    noiseBuf = ctx.createBuffer(1, sr * 2, sr);
+    const d = noiseBuf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    // applause: many short clap bursts
+    applauseBuf = ctx.createBuffer(1, Math.floor(sr * 1.3), sr);
+    const a = applauseBuf.getChannelData(0);
+    for (let k = 0; k < 110; k++) {
+      const start = Math.floor(Math.random() * sr * 1.1), len = Math.floor(sr * (0.012 + Math.random() * 0.025)), amp = 0.3 + Math.random() * 0.7;
+      for (let i = 0; i < len && start + i < a.length; i++) a[start + i] += (Math.random() * 2 - 1) * amp * Math.exp(-i / (len * 0.3));
+    }
+    for (let i = 0; i < a.length; i++) { const t = i / a.length; a[i] *= t > 0.75 ? (1 - t) / 0.25 : 1; }
+  }
+  if (ctx.state === "suspended") ctx.resume();
+  return ctx;
+}
+function newBus() {
+  if (bus) { try { bus.gain.setTargetAtTime(0, ctx.currentTime, 0.02); } catch (e) {} }
+  bus = ctx.createGain(); bus.gain.value = state.muted ? 0 : 1; bus.connect(ctx.destination);
+  return bus;
+}
+function playClaps() {
+  const src = ctx.createBufferSource(); src.buffer = applauseBuf;
+  const f = ctx.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = 2200; f.Q.value = 0.5;
+  const g = ctx.createGain(); g.gain.value = 1.8;
+  src.connect(f).connect(g).connect(bus); src.start();
+}
+function beep(when, freq, dur, vol, type) {
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.type = type || "sine"; o.frequency.value = freq;
+  g.gain.setValueAtTime(0, when);
+  g.gain.linearRampToValueAtTime(vol, when + 0.004);
+  g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+  o.connect(g).connect(bus); o.start(when); o.stop(when + dur + 0.02);
+}
+function playTick() { beep(ctx.currentTime, 1100, 0.05, 0.5, "square"); }
+function playPips() { const t = ctx.currentTime; for (let i = 0; i < 20; i++) beep(t + i * 0.15, 2200, 0.07, 0.35, "square"); }
+function playBoom() {
+  const t = ctx.currentTime;
+  const src = ctx.createBufferSource(); src.buffer = noiseBuf;
+  const f = ctx.createBiquadFilter(); f.type = "lowpass";
+  f.frequency.setValueAtTime(4000, t); f.frequency.exponentialRampToValueAtTime(80, t + 1.6);
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(1.6, t); g.gain.exponentialRampToValueAtTime(0.001, t + 1.8);
+  src.connect(f).connect(g).connect(bus); src.start(t); src.stop(t + 1.9);
+  const o = ctx.createOscillator(), og = ctx.createGain();
+  o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(30, t + 0.9);
+  og.gain.setValueAtTime(1.4, t); og.gain.exponentialRampToValueAtTime(0.001, t + 1.2);
+  o.connect(og).connect(bus); o.start(t); o.stop(t + 1.3);
+}
+function testSounds() {
+  audio(); newBus();
+  playClaps();
+  setTimeout(playTick, 1500);
+  setTimeout(() => { const t = ctx.currentTime; for (let i = 0; i < 4; i++) beep(t + i * 0.15, 2200, 0.07, 0.35, "square"); }, 2200);
+  setTimeout(playBoom, 3200);
+}
+
+/* =================== run logic =================== */
+let lastSec = null, timeUp = false;
+
+function eligible(id) { const p = byId(id); return p && p.present; }
+function syncRun() {
+  const r = state.run;
+  const known = new Set([...r.queue, ...r.skipped, ...r.done, r.cur].filter(Boolean));
+  const fresh = !r.startedAt && !r.cur;
+  if (fresh) { r.queue = state.people.filter(p => p.present).map(p => p.id); r.skipped = []; r.done = []; return; }
+  r.queue = r.queue.filter(eligible); r.skipped = r.skipped.filter(eligible);
+  state.people.forEach(p => { if (p.present && !known.has(p.id)) r.queue.push(p.id); });
+}
+function startSpeaker(id) {
+  const r = state.run;
+  let target = id;
+  if (!target) target = r.queue[0];
+  if (!target) return;
+  if (!audio()) return;
+  const qi = r.queue.indexOf(target);
+  if (qi >= 0) {                       // 順番飛ばし → 手前の人はスキップへ
+    r.skipped.push(...r.queue.slice(0, qi));
+    r.queue.splice(0, qi + 1);
+  } else {
+    const si = r.skipped.indexOf(target);
+    if (si < 0) return;
+    r.skipped.splice(si, 1);
+  }
+  if (r.cur) r.done.push(r.cur);
+  r.cur = target;
+  r.dur = state.s.dur; r.endAt = Date.now() + r.dur * 1000;
+  if (!r.startedAt) r.startedAt = Date.now();
+  lastSec = null; timeUp = false;
+  newBus(); playClaps();
+  save(); renderRun(); updateClock();
+}
+function updateClock() {
+  const r = state.run;
+  $("elapsedVal").textContent = r.startedAt ? fmtClock((Date.now() - r.startedAt) / 1000) : "0:00";
+  const cnt = $("count"), bar = $("bar");
+  if (!r.cur) {
+    cnt.textContent = fmtCount(state.s.dur); cnt.className = ""; bar.className = ""; bar.firstElementChild.style.transform = "scaleX(1)";
+    return;
+  }
+  const remMs = Math.max(0, r.endAt - Date.now());
+  const sec = Math.ceil(remMs / 1000);
+  cnt.textContent = fmtCount(sec);
+  const cls = sec === 0 ? "over" : sec <= 3 ? "crit" : sec <= 10 ? "low" : "";
+  cnt.className = cls; bar.className = cls;
+  bar.firstElementChild.style.transform = `scaleX(${remMs / (r.dur * 1000)})`;
+  if (sec !== lastSec && ctx && !state.muted) {
+    if (sec <= 10 && sec > 3) playTick();
+    else if (sec === 3) playPips();
+    else if (sec === 0 && !timeUp) playBoom();
+  }
+  if (sec === 0 && !timeUp) { timeUp = true; renderTimeUp(); }
+  lastSec = sec;
+}
+function fmtCount(sec) { return sec >= 60 ? Math.floor(sec / 60) + ":" + String(sec % 60).padStart(2, "0") : String(sec); }
+function renderTimeUp() {
+  const r = state.run, el = $("timeup"); el.innerHTML = "";
+  if (r.cur && Date.now() >= r.endAt) el.append(h("span", {}, "時間切れです"));
+}
+
+function renderRun() {
+  const r = state.run, s = state.s;
+  $("runTitle").textContent = s.title;
+  document.title = s.title + " - 自己紹介タイマー";
+  // stage
+  const nb = $("nameBig"); nb.innerHTML = "";
+  if (r.cur) { const n = nameOf(byId(r.cur)); nb.append(n.name, h("small", {}, n.hon)); }
+  else if (r.queue.length) { nb.append(h("span", { style: "color:var(--muted);font-size:.5em" }, "スペースキーでスタート")); }
+  else nb.append(h("span", { style: "color:var(--muted);font-size:.5em" }, "出席者がいません"));
+  renderTimeUp();
+  const sb = $("startBtn"); sb.innerHTML = "";
+  if (r.queue.length) { sb.disabled = false; sb.append(r.cur ? "次の方をスタート" : "スタート", h("kbd", {}, "Space")); }
+  else { sb.disabled = true; sb.append(r.skipped.length ? "スキップされた方を右から選択" : (r.cur ? "全員終了" : "スタート")); }
+  // side
+  const side = $("side"); side.innerHTML = "";
+  r.queue.slice(0, 10).forEach((id, i) => {
+    const p = byId(id);
+    side.append(h("button", { class: "q" + (i === 0 ? " next" : ""), type: "button", onclick: e => { e.currentTarget.blur(); startSpeaker(id); } },
+      h("span", { class: "lb" }, i === 0 ? "次の方" : "ご準備ください"),
+      h("span", { class: "nm" }, fullName(p))));
+  });
+  if (!r.queue.length) side.append(h("div", { class: "more" }, "待機中の方はいません"));
+  if (r.queue.length > 10) side.append(h("div", { class: "more" }, `ほか ${r.queue.length - 10} 人`));
+  if (r.skipped.length) {
+    side.append(h("h3", {}, "スキップされた人"));
+    r.skipped.forEach(id => {
+      const p = byId(id);
+      side.append(h("div", { class: "sk" },
+        h("button", { class: "q", type: "button", onclick: e => { e.currentTarget.blur(); startSpeaker(id); } }, h("span", { class: "nm" }, fullName(p))),
+        h("label", { style: "display:flex;align-items:center;gap:4px;font-size:.75rem;color:var(--muted)" },
+          h("input", { type: "checkbox", checked: true, title: "出席/欠席",
+            onclick: e => { e.preventDefault(); e.target.blur(); askAbsent(p); } }), "出席")));
+    });
+  }
+}
+function askAbsent(p) {
+  confirmModal(`${fullName(p)}を欠席にしますか？`, () => {
+    p.present = false;
+    state.run.skipped = state.run.skipped.filter(x => x !== p.id);
+    save(); renderRun();
+  });
+}
+
+/* =================== modal =================== */
+function confirmModal(msg, onYes) {
+  const m = $("modal"); m.innerHTML = "";
+  const close = () => { m.classList.add("hidden"); m.innerHTML = ""; };
+  m.append(h("div", { class: "box" }, h("p", {}, msg),
+    h("div", { class: "btns" },
+      h("button", { class: "btn", type: "button", onclick: close }, "いいえ"),
+      h("button", { class: "btn primary", type: "button", onclick: () => { close(); onYes(); } }, "はい"))));
+  m.classList.remove("hidden");
+}
+const modalOpen = () => !$("modal").classList.contains("hidden");
+
+/* =================== view switching / wiring =================== */
+function render() {
+  $("setup").classList.toggle("hidden", state.view !== "setup");
+  $("run").classList.toggle("hidden", state.view !== "run");
+  if (state.view === "setup") { document.title = "自己紹介タイマー"; renderSetup(); }
+  else { syncRun(); renderRun(); updateClock(); }
+  save();
+}
+
+$("setTitle").oninput = e => { state.s.title = e.target.value; save(); };
+$("setDur").oninput = e => { const v = parseInt(e.target.value, 10); if (v > 0) { state.s.dur = v; save(); } };
+$("setHon").oninput = e => { state.s.hon = e.target.value; save(); };
+$("setNameCol").onchange = e => { state.s.nameCol = +e.target.value; save(); };
+$("setTitleCol").onchange = e => { state.s.titleCol = +e.target.value; save(); };
+$("sortCol").onchange = e => { state.s.sortCol = +e.target.value; applySort(); save(); renderTable(); };
+$("sortDir").onchange = e => { state.s.sortDir = +e.target.value; applySort(); save(); renderTable(); };
+$("muteBtn").onclick = () => { state.muted = !state.muted; $("muteBtn").textContent = state.muted ? "音: OFF" : "音: ON"; save(); };
+$("testSoundBtn").onclick = testSounds;
+$("loadBtn").onclick = () => $("file").click();
+$("file").onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  const text = decodeBuffer(await f.arrayBuffer());
+  importRows(parseCSV(text));
+  if (state.s.sortCol >= 0) applySort();
+  e.target.value = "";
+};
+$("sampleBtn").onclick = () => { importRows(parseCSV(SAMPLE)); };
+$("exportBtn").onclick = () => {
+  const rows = [state.cols, ...state.people.map(p => p.vals)];
+  const blob = new Blob(["﻿" + toCSV(rows)], { type: "text/csv" });
+  const a = h("a", { href: URL.createObjectURL(blob), download: "participants.csv" });
+  document.body.append(a); a.click(); a.remove();
+};
+$("addRowBtn").onclick = () => { state.people.push({ id: newId(), vals: state.cols.map(() => ""), present: true }); save(); renderTable(); };
+$("addColBtn").onclick = () => {
+  const name = prompt("追加する列の名前"); if (!name) return;
+  state.cols.push(name); state.people.forEach(p => p.vals.push("")); save(); renderSetup();
+};
+$("allPresentBtn").onclick = () => { state.people.forEach(p => p.present = true); save(); renderTable(); };
+$("clearBtn").onclick = () => confirmModal("リストを全消去しますか？", () => { state.people = []; state.run = freshRun(); save(); renderTable(); });
+$("goBtn").onclick = () => { audio(); state.view = "run"; render(); };
+$("backBtn").onclick = () => { state.view = "setup"; render(); };
+$("resetBtn").onclick = () => confirmModal("発表を最初からやり直しますか？（経過時間もリセット）", () => {
+  state.run = freshRun(); lastSec = null; timeUp = false;
+  if (bus) bus.gain.value = 0;
+  render();
+});
+$("fsBtn").onclick = () => { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {}); };
+$("startBtn").onclick = e => { e.currentTarget.blur(); startSpeaker(); };
+
+const isSpace = e => e.code === "Space" || e.key === " ";
+document.addEventListener("keydown", e => {
+  if (state.view !== "run" || !isSpace(e)) return;
+  e.preventDefault();
+  if (e.repeat || modalOpen()) return;
+  startSpeaker();
+});
+document.addEventListener("keyup", e => { if (state.view === "run" && isSpace(e)) e.preventDefault(); });
+
+setInterval(() => { if (state.view === "run") updateClock(); }, 100);
+
+load();
+render();
+</script>
+</body>
+</html>
