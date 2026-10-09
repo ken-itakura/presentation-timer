@@ -46,8 +46,9 @@ Diseños para móviles en vertical y horizontal. En iPhone, el interruptor de si
 ├── sample/
 │   └── participants.csv  # sample list
 ├── README.md             # + README.<lang>.md (16 languages)
+└── LICENSE               # MIT
 ```
 
 `index.html` lo contiene todo: el diccionario de idiomas, un analizador de CSV, la pantalla de ajustes, la síntesis de sonidos con Web Audio (sin archivos de audio), la lógica del temporizador (basada en marcas de tiempo, sin desviarse) y la pantalla de ejecución. Los ajustes y el progreso se guardan automáticamente en `localStorage`.
 
-Licencia: sin especificar
+Licencia: [MIT](LICENSE)

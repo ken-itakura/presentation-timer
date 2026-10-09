@@ -46,8 +46,9 @@ Tata letak untuk ponsel potret dan lanskap. Di iPhone, sakelar senyap mematikan 
 ├── sample/
 │   └── participants.csv  # sample list
 ├── README.md             # + README.<lang>.md (16 languages)
+└── LICENSE               # MIT
 ```
 
 `index.html` berisi semuanya: kamus bahasa, pengurai CSV, layar pengaturan, sintesis suara dengan Web Audio (tanpa file audio), logika timer (berbasis stempel waktu sehingga tidak melenceng), dan layar jalannya acara. Pengaturan dan progres tersimpan otomatis di `localStorage`.
 
-Lisensi: belum ditentukan
+Lisensi: [MIT](LICENSE)

@@ -46,8 +46,9 @@ Mises en page pour téléphone en portrait et en paysage. Sur iPhone, le commuta
 ├── sample/
 │   └── participants.csv  # sample list
 ├── README.md             # + README.<lang>.md (16 languages)
+└── LICENSE               # MIT
 ```
 
 `index.html` contient tout : le dictionnaire des langues, un analyseur CSV, l’écran de réglages, la synthèse sonore Web Audio (aucun fichier audio), la logique du minuteur (basée sur l’horodatage, sans dérive) et l’écran de passage. Les réglages et la progression sont enregistrés automatiquement dans `localStorage`.
 
-Licence : non précisée
+Licence : [MIT](LICENSE)

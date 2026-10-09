@@ -46,8 +46,9 @@ Sam Rivera,Dr.,B,2001
 ├── sample/
 │   └── participants.csv  # sample list
 ├── README.md             # + README.<lang>.md (16 languages)
+└── LICENSE               # MIT
 ```
 
 `index.html` 包含全部內容：多語言詞典、CSV 解析、設定畫面、以 Web Audio 合成音效（無需音訊檔）、計時邏輯（以時間戳計算，不易漂移）與計時畫面。設定與進度會自動儲存到 `localStorage`。
 
-授權：未指定
+授權：[MIT](LICENSE)

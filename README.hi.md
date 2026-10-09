@@ -46,8 +46,9 @@ Sam Rivera,Dr.,B,2001
 ├── sample/
 │   └── participants.csv  # sample list
 ├── README.md             # + README.<lang>.md (16 languages)
+└── LICENSE               # MIT
 ```
 
 `index.html` में सब कुछ है: भाषा शब्दकोश, CSV पार्सर, सेटअप स्क्रीन, Web Audio से ध्वनि-निर्माण (ऑडियो फ़ाइलें नहीं), टाइमर लॉजिक (टाइमस्टैम्प-आधारित, इसलिए समय नहीं भटकता) और टाइमर स्क्रीन। सेटिंग्स और प्रगति `localStorage` में अपने-आप सहेजी जाती हैं।
 
-लाइसेंस: निर्दिष्ट नहीं
+लाइसेंस: [MIT](LICENSE)

@@ -46,8 +46,9 @@ Có bố cục cho điện thoại dọc và ngang. Trên iPhone, công tắc im
 ├── sample/
 │   └── participants.csv  # sample list
 ├── README.md             # + README.<lang>.md (16 languages)
+└── LICENSE               # MIT
 ```
 
 `index.html` chứa tất cả: từ điển ngôn ngữ, bộ phân tích CSV, màn hình cài đặt, tổng hợp âm thanh bằng Web Audio (không cần tệp âm thanh), logic hẹn giờ (dựa trên dấu thời gian nên không bị lệch) và màn hình chạy. Cài đặt và tiến trình được tự động lưu vào `localStorage`.
 
-Giấy phép: chưa chỉ định
+Giấy phép: [MIT](LICENSE)

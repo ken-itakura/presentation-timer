@@ -48,10 +48,11 @@ Sam Rivera,Dr.,B,2001
 ├── sample/
 │   └── participants.csv  # sample list
 ├── README.md             # + README.<lang>.md (16 languages)
+└── LICENSE               # MIT
 ```
 
 يحتوي `index.html` على كل شيء: قاموس اللغات، محلّل CSV، شاشة الإعدادات، توليد الأصوات عبر Web Audio (دون ملفات صوتية)، منطق المؤقّت (قائم على الطوابع الزمنية فلا ينحرف) وشاشة التشغيل. تُحفظ الإعدادات والتقدّم تلقائيًا في `localStorage`.
 
-الترخيص: غير محدد
+الترخيص: [MIT](LICENSE)
 
 </div>

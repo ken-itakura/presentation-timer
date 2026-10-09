@@ -46,8 +46,9 @@ Layouts für Smartphones im Hoch- und Querformat. Beim iPhone schaltet der Stumm
 ├── sample/
 │   └── participants.csv  # sample list
 ├── README.md             # + README.<lang>.md (16 languages)
+└── LICENSE               # MIT
 ```
 
 `index.html` enthält alles: das Sprachwörterbuch, einen CSV-Parser, den Einstellungsbildschirm, die Tonsynthese per Web Audio (keine Audiodateien), die Timer-Logik (zeitstempelbasiert, daher ohne Drift) und den Ablaufbildschirm. Einstellungen und Fortschritt werden automatisch in `localStorage` gespeichert.
 
-Lizenz: nicht angegeben
+Lizenz: [MIT](LICENSE)

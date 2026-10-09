@@ -46,8 +46,9 @@ Telefonlar için dikey ve yatay yerleşimler vardır. iPhone’da sessiz anahtar
 ├── sample/
 │   └── participants.csv  # sample list
 ├── README.md             # + README.<lang>.md (16 languages)
+└── LICENSE               # MIT
 ```
 
 `index.html` her şeyi içerir: dil sözlüğü, CSV ayrıştırıcı, ayarlar ekranı, Web Audio ile ses sentezi (ses dosyası yok), zamanlayıcı mantığı (zaman damgasına dayalı, kayma yapmaz) ve çalışma ekranı. Ayarlar ve ilerleme otomatik olarak `localStorage`’a kaydedilir.
 
-Lisans: belirtilmedi
+Lisans: [MIT](LICENSE)

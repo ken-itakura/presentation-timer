@@ -46,8 +46,9 @@ Sam Rivera,Dr.,B,2001
 ├── sample/
 │   └── participants.csv  # sample list
 ├── README.md             # + README.<lang>.md (16 languages)
+└── LICENSE               # MIT
 ```
 
 `index.html` にすべてが入っています：多言語の辞書、CSVパーサー、準備画面、Web Audio による効果音の合成（音声ファイル不要）、タイマー処理（時刻ベースでズレにくい）、本番画面。設定と進行状況は `localStorage` に自動保存されます。
 
-ライセンス：未設定
+ライセンス：[MIT](LICENSE)

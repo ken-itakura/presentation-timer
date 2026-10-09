@@ -46,8 +46,9 @@ Sam Rivera,Dr.,B,2001
 ├── sample/
 │   └── participants.csv  # sample list
 ├── README.md             # + README.<lang>.md (16 languages)
+└── LICENSE               # MIT
 ```
 
 `index.html`-এ সবকিছু আছে: ভাষার অভিধান, CSV পার্সার, সেটআপ স্ক্রিন, Web Audio দিয়ে শব্দ তৈরি (অডিও ফাইল লাগে না), টাইমারের যুক্তি (টাইমস্ট্যাম্প-ভিত্তিক, তাই সময় সরে যায় না) এবং টাইমার স্ক্রিন। সেটিংস ও অগ্রগতি `localStorage`-এ নিজে থেকে সংরক্ষিত হয়।
 
-লাইসেন্স: নির্দিষ্ট করা নেই
+লাইসেন্স: [MIT](LICENSE)

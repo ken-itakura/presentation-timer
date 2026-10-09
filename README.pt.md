@@ -46,8 +46,9 @@ Layouts para celular na vertical e na horizontal. No iPhone, a chave de silencio
 ├── sample/
 │   └── participants.csv  # sample list
 ├── README.md             # + README.<lang>.md (16 languages)
+└── LICENSE               # MIT
 ```
 
 `index.html` contém tudo: o dicionário de idiomas, um analisador de CSV, a tela de configurações, a síntese de sons com Web Audio (sem arquivos de áudio), a lógica do cronômetro (baseada em carimbos de tempo, sem deriva) e a tela de execução. Configurações e progresso são salvos automaticamente em `localStorage`.
 
-Licença: não especificada
+Licença: [MIT](LICENSE)

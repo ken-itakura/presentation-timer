@@ -46,8 +46,9 @@ Layouts for portrait and landscape phones. On iPhone, the silent switch mutes so
 ├── sample/
 │   └── participants.csv  # sample list
 ├── README.md             # + README.<lang>.md (16 languages)
+└── LICENSE               # MIT
 ```
 
 `index.html` contains everything: the i18n dictionary, a CSV parser, the setup view, Web Audio sound synthesis (no audio files), timer logic (timestamp-based, so it does not drift) and the run view. Settings and progress are saved automatically to `localStorage`.
 
-License: not specified
+License: [MIT](LICENSE)

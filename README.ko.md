@@ -46,8 +46,9 @@ Sam Rivera,Dr.,B,2001
 ├── sample/
 │   └── participants.csv  # sample list
 ├── README.md             # + README.<lang>.md (16 languages)
+└── LICENSE               # MIT
 ```
 
 `index.html` 하나에 모든 것이 들어 있습니다: 언어 사전, CSV 파서, 설정 화면, Web Audio 효과음 합성(오디오 파일 불필요), 타이머 로직(시각 기반이라 오차가 쌓이지 않음), 진행 화면. 설정과 진행 상황은 `localStorage`에 자동 저장됩니다.
 
-라이선스: 미지정
+라이선스: [MIT](LICENSE)
