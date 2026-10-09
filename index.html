@@ -738,11 +738,12 @@ let lastSec = null, timeUp = false;
 function eligible(id) { const p = byId(id); return p && p.present; }
 function syncRun() {
   const r = state.run;
-  const known = new Set([...r.queue, ...r.skipped, ...r.done, r.cur].filter(Boolean));
   const fresh = !r.startedAt && !r.cur;
   if (fresh) { r.queue = state.people.filter(p => p.present).map(p => p.id); r.skipped = []; r.done = []; return; }
-  r.queue = r.queue.filter(eligible); r.skipped = r.skipped.filter(eligible);
-  state.people.forEach(p => { if (p.present && !known.has(p.id)) r.queue.push(p.id); });
+  // 待機列は常に現在のリスト順（並べ替え・出欠の変更を反映）。発表済み・スキップ済み・発表中の人は除く
+  r.skipped = r.skipped.filter(eligible);
+  const used = new Set([...r.skipped, ...r.done, r.cur].filter(Boolean));
+  r.queue = state.people.filter(p => p.present && !used.has(p.id)).map(p => p.id);
 }
 function startSpeaker(id) {
   const r = state.run;
