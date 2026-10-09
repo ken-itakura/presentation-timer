@@ -818,8 +818,9 @@ function renderRun() {
   const side = $("side"); side.innerHTML = "";
   r.queue.slice(0, 10).forEach((id, i) => {
     const p = byId(id);
+    if (i === 1) side.append(h("h3", {}, t("prepL")));
     side.append(h("button", { class: "q" + (i === 0 ? " next" : ""), type: "button", onclick: e => { e.currentTarget.blur(); startSpeaker(id); } },
-      h("span", { class: "lb" }, i === 0 ? t("nextL") : t("prepL")),
+      i === 0 ? h("span", { class: "lb" }, t("nextL")) : "",
       h("span", { class: "nm" }, fullName(p))));
   });
   if (!r.queue.length) side.append(h("div", { class: "more" }, t("nobody")));
