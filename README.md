@@ -1,81 +1,53 @@
-# Presentation Timer（自己紹介タイマー）
+# Presentation Timer
 
-同窓会などで、参加者に順番に自己紹介してもらうときに使う、1ページ完結のタイマーアプリです。
-`index.html` をブラウザで開くだけで動きます（サーバー・インストール・ネット接続は不要）。
+[English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [हिन्दी](README.hi.md) | [Español](README.es.md) | [Français](README.fr.md) | [العربية](README.ar.md) | [বাংলা](README.bn.md) | [Português](README.pt.md) | [Русский](README.ru.md) | [Bahasa Indonesia](README.id.md) | [Deutsch](README.de.md) | [한국어](README.ko.md) | [Türkçe](README.tr.md) | [Tiếng Việt](README.vi.md)
 
-## 使い方
+A one-page timer for self-introductions at reunions and similar events. Just open `index.html` in a browser — no installation, server or internet connection needed.
 
-1. `index.html` をブラウザ（Safari / Chrome）で開く
-2. **準備画面**
-   - 「CSVを読み込む…」で参加者リストを読み込む（`sample/participants.csv` を参照。「サンプルを読み込む」でも試せます）
-   - 1行目はヘッダー行。UTF-8 / Shift_JIS を自動判別
-   - 各行の ✔ で出席/欠席を切り替え（欠席者は発表順から除外）。セルは直接編集可
-   - 「並べ替え」で好きなフィールドを選んで発表順を決める
-   - タイトル（初期値「同窓会」）、発表時間（初期値45秒）、標準の敬称（初期値「さん」）、名前/敬称に使うフィールドを設定
-   - 「音を試す」で音量を確認
-3. 「本番画面へ」を押す（このとき音声が有効になります）
-4. **本番画面**
+## Usage
 
-| 操作 | 動作 |
+1. Open `index.html` in a browser (Safari / Chrome).
+2. On the setup screen: load a CSV (see `sample/participants.csv`, or use “Load sample”), toggle attendance for each person, sort by any field, set the title / time per speaker / honorific / language, and test the sounds.
+3. Press “Go to timer” (this also enables audio).
+4. Run the timer:
+
+| Action | Effect |
 |---|---|
-| `Space` / スタートボタン | 次の方の発表を開始（拍手SE） |
-| 右端の名前をクリック | その人から開始。手前の人は「スキップされた人」へ移動 |
-| スキップされた人の名前をクリック | その人の発表を開始 |
-| スキップされた人の「出席」チェックを外す | 確認後、欠席扱いでリストから削除（タイマーは止まらない） |
+| `Space` / Start button | Start the next speaker (with applause) |
+| Click a name in the right-hand list | Start that person; everyone before them moves to “Skipped” |
+| Click a name in the Skipped list | Start that person |
+| Uncheck “Present” in the Skipped list | After confirmation, mark them absent and remove them (the timer keeps running) |
 
-- 残り10秒: 1秒ごとにチック音 / 残り3秒: ピピピピ連続音 / 0秒: 爆発音＋「時間切れです」ラベル
-- 右上: 開始からの経過時間。右端: 次の10人（先頭が「次の方」、以降は「ご準備ください」）
-- 「最初からやり直す」で進行をリセット、「全画面」で全画面表示
+10 s left: a tick every second · 3 s left: rapid beeps · 0 s: explosion sound and a “Time's up” label. The top right shows total elapsed time; the right column shows the next 10 speakers.
 
-### CSV の形式
+## CSV format
+
+The first row is the header. UTF-8 and Shift_JIS are detected automatically. The name and honorific columns are auto-detected from the header (e.g. `name`, `honorific`, or their translations) and can be changed in settings. If a person's honorific cell is empty, the default honorific is used.
 
 ```csv
-ふりがな,名前,敬称,クラス,卒業年
-あおき,青木 太郎,,3-A,2001
-上田 健,…
+name,honorific,group,year
+Alex Morgan,,A,2001
+Sam Rivera,Dr.,B,2001
 ```
 
-- 名前列: 見出しが `名前` / `氏名` / `name` なら自動選択（変更可）
-- 敬称列: 見出しが `敬称` / `title` なら自動選択。値が空の人は標準の敬称を使用
+## Languages
 
-## 多言語対応（16言語）
+16 languages: switch with “Language” on the setup screen (the browser language is used at first and your choice is saved). UI text, default title, default honorific, sample data and honorific position (before/after the name) follow the language; Arabic uses a right-to-left layout. Translations have not been reviewed by native speakers — edit `I18N` in `index.html` to fix them. To add a language, add entries to `LANGS`, `I18N` and `SAMPLE_NAMES`.
 
-準備画面の「言語」で切り替えられます。初回はブラウザの言語設定から自動で選ばれ、選んだ言語は保存されます。
+## Mobile
 
-日本語 / English / 简体中文 / 繁體中文 / हिन्दी / Español / Français / العربية / বাংলা / Português / Русский / Bahasa Indonesia / Deutsch / 한국어 / Türkçe / Tiếng Việt
+Layouts for portrait and landscape phones. On iPhone, the silent switch mutes sound. Opening the file via the Files app is the most reliable; with GitHub Pages you can simply open a URL.
 
-- 画面の文言、タイトルの初期値、標準の敬称、サンプルデータ（見出しと名前）が言語ごとに切り替わります
-- **敬称の位置**（名前の前／後）を言語ごとの標準で設定します。設定画面から変更できます（例: 日本語「山田さん」、英語「Dr. Smith」）
-- アラビア語は右から左（RTL）のレイアウトになります
-- 並べ替えは選択中の言語の照合順序を使います
-- CSVの見出しが各言語の「名前」「敬称」に当たる語なら、自動で名前・敬称のフィールドに割り当てます
-- 翻訳は機械的に作成したもので、ネイティブの確認は受けていません。修正は `index.html` 内の `I18N` を編集してください
-- 言語を追加するには、`LANGS`（表示名・文字方向・敬称の位置など）と `I18N`（文言）、必要なら `SAMPLE_NAMES` に1言語ぶん足します
-
-## モバイル
-
-縦向き・横向きに対応したレイアウトです。iPhone では消音スイッチがONだと音が鳴りません。ファイルは「ファイル」アプリ経由で開くのが確実です。GitHub Pages で公開すれば URL を開くだけで使えます。
-
-## 構成
+## Structure
 
 ```
 .
-├── index.html            # アプリ本体（HTML / CSS / JavaScript を1ファイルに内包）
+├── index.html            # app (HTML / CSS / JavaScript in one file)
 ├── sample/
-│   └── participants.csv  # サンプルの参加者リスト
-└── README.md
+│   └── participants.csv  # sample list
+├── README.md             # + README.<lang>.md (16 languages)
 ```
 
-`index.html` の中身:
+`index.html` contains everything: the i18n dictionary, a CSV parser, the setup view, Web Audio sound synthesis (no audio files), timer logic (timestamp-based, so it does not drift) and the run view. Settings and progress are saved automatically to `localStorage`.
 
-- **i18n**: `LANGS`（言語ごとの設定）、`I18N`（文言辞書、`t()` で参照）、`SAMPLE_NAMES`（サンプル名）。静的な文言は `data-i18n` 属性、動的な文言は `t()` で描画
-- **state / save・load**: 設定・参加者・進行状況を `localStorage` に自動保存（リロードしても再開可）
-- **CSV**: 自前のパーサー（引用符・改行対応）と書き出し
-- **setup view**: 設定、参加者テーブル、並べ替え
-- **audio**: Web Audio API で拍手・チック・ピピピ・爆発音を合成（音声ファイル不要）
-- **run logic**: `startSpeaker()` が発表開始とスキップ処理を担当。時刻は `Date.now()` ベースでズレにくい
-- **run view**: カウントダウン表示、次の10人、スキップ一覧、確認ダイアログ（タイマーを止めない独自モーダル）
-
-## ライセンス
-
-未設定
+License: not specified
