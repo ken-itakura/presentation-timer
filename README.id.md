@@ -17,6 +17,7 @@ Timer satu halaman untuk perkenalan diri bergiliran di acara reuni dan sejenisny
 | Klik nama di daftar kanan | Mulai orang itu; yang sebelumnya pindah ke “Dilewati” |
 | Klik nama di “Dilewati” | Mulai orang itu |
 | Hapus centang “Hadir” di “Dilewati” | Setelah konfirmasi, ditandai tidak hadir dan dihapus dari daftar (timer tetap berjalan) |
+| Tombol “Jeda” | Menjeda/melanjutkan hitung mundur (total waktu berlalu tetap berjalan) |
 
 Sisa 10 detik: tik tiap detik · sisa 3 detik: bip cepat · 0 detik: suara ledakan dan label “Waktu habis!”. Kanan atas menampilkan total waktu berlalu; kolom kanan menampilkan 10 pembicara berikutnya.
 
@@ -29,6 +30,8 @@ name,honorific,group,year
 Alex Morgan,,A,2001
 Sam Rivera,Dr.,B,2001
 ```
+
+Centang “Tampil” pada judul kolom di layar pengaturan untuk menampilkan kolom itu di sekitar nama pembicara pada layar timer (nama selalu aktif; default: furigana, nama, dan sapaan). Kolom di kiri kolom nama muncul di atasnya, kolom di kanan muncul di bawahnya. Jika sapaan dimatikan, dipakai sapaan default.
 
 ## Bahasa
 

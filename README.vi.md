@@ -17,6 +17,7 @@ Bộ hẹn giờ một trang để mọi người lần lượt giới thiệu b
 | Bấm vào tên ở danh sách bên phải | Bắt đầu người đó; những người đứng trước chuyển sang “Bị bỏ qua” |
 | Bấm vào tên trong “Bị bỏ qua” | Bắt đầu người đó |
 | Bỏ chọn “Có mặt” trong “Bị bỏ qua” | Sau khi xác nhận, đánh dấu vắng mặt và xóa khỏi danh sách (bộ hẹn giờ vẫn chạy) |
+| Nút “Tạm dừng” | Tạm dừng/tiếp tục đếm ngược (tổng thời gian đã trôi qua vẫn chạy) |
 
 Còn 10 giây: tiếng tích mỗi giây · còn 3 giây: tiếng bíp dồn dập · 0 giây: tiếng nổ và nhãn “Hết giờ!”. Góc trên bên phải hiển thị tổng thời gian đã trôi qua; cột bên phải hiển thị 10 người tiếp theo.
 
@@ -29,6 +30,8 @@ name,honorific,group,year
 Alex Morgan,,A,2001
 Sam Rivera,Dr.,B,2001
 ```
+
+Tích “Hiện” ở tiêu đề cột trên màn hình cài đặt để hiển thị trường đó quanh tên người nói trên màn hình hẹn giờ (tên luôn bật; mặc định: furigana, tên và danh xưng). Trường nằm bên trái cột tên hiện phía trên tên, bên phải hiện phía dưới. Nếu tắt danh xưng, sẽ dùng danh xưng mặc định.
 
 ## Ngôn ngữ
 

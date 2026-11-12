@@ -17,6 +17,7 @@ Un temporizador de una sola página para que cada persona se presente por turnos
 | Clic en un nombre de la lista de la derecha | Inicia a esa persona; quienes iban antes pasan a «Omitidos» |
 | Clic en un nombre de «Omitidos» | Inicia a esa persona |
 | Desmarcar «Presente» en «Omitidos» | Tras confirmar, se marca como ausente y se quita de la lista (el temporizador sigue) |
+| Botón «Pausa» | Pausa/reanuda la cuenta atrás (el tiempo total transcurrido sigue corriendo) |
 
 Quedan 10 s: un tic por segundo · quedan 3 s: pitidos rápidos · 0 s: explosión y etiqueta «¡Se acabó el tiempo!». Arriba a la derecha se muestra el tiempo total transcurrido y, en la columna derecha, las 10 personas siguientes.
 
@@ -29,6 +30,8 @@ name,honorific,group,year
 Alex Morgan,,A,2001
 Sam Rivera,Dr.,B,2001
 ```
+
+Marca «Mostrar» en el encabezado de una columna en la pantalla de ajustes para mostrar ese campo junto al nombre del orador en la pantalla del temporizador (el nombre siempre está activado; por defecto: furigana, nombre y tratamiento). Los campos a la izquierda de la columna del nombre aparecen encima y los de la derecha, debajo. Si el tratamiento está desactivado, se usa el tratamiento por defecto.
 
 ## Idiomas
 

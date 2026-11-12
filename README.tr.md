@@ -17,6 +17,7 @@ Mezunlar buluşması gibi etkinliklerde herkesin sırayla kendini tanıtması i�
 | Sağdaki listede bir isme tıklama | O kişiyi başlatır; öncesindekiler “Atlananlar”a geçer |
 | “Atlananlar”daki bir isme tıklama | O kişiyi başlatır |
 | “Atlananlar”da “Katılıyor” işaretini kaldırma | Onaydan sonra yok sayılır ve listeden çıkarılır (zamanlayıcı durmaz) |
+| “Duraklat” düğmesi | Geri sayımı duraklatır/devam ettirir (toplam geçen süre işlemeye devam eder) |
 
 Son 10 sn: her saniye tik sesi · son 3 sn: hızlı bip sesleri · 0 sn: patlama sesi ve “Süre doldu!” etiketi. Sağ üstte toplam geçen süre, sağ sütunda sonraki 10 kişi görünür.
 
@@ -29,6 +30,8 @@ name,honorific,group,year
 Alex Morgan,,A,2001
 Sam Rivera,Dr.,B,2001
 ```
+
+Ayarlar ekranında bir sütun başlığındaki “Göster”i işaretlerseniz o alan, zamanlayıcı ekranında konuşmacının isminin çevresinde görünür (isim her zaman açıktır; varsayılan: furigana, isim ve hitap). İsim sütununun solundaki alanlar ismin üstünde, sağındakiler altında görünür. Hitap kapalıysa varsayılan hitap kullanılır.
 
 ## Diller
 

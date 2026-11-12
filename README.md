@@ -17,6 +17,7 @@ A one-page timer for self-introductions at reunions and similar events. Just ope
 | Click a name in the right-hand list | Start that person; everyone before them moves to “Skipped” |
 | Click a name in the Skipped list | Start that person |
 | Uncheck “Present” in the Skipped list | After confirmation, mark them absent and remove them (the timer keeps running) |
+| “Pause” button | Pause / resume the countdown (the total elapsed time keeps running) |
 
 10 s left: a tick every second · 3 s left: rapid beeps · 0 s: explosion sound and a “Time's up” label. The top right shows total elapsed time; the right column shows the next 10 speakers.
 
@@ -29,6 +30,8 @@ name,honorific,group,year
 Alex Morgan,,A,2001
 Sam Rivera,Dr.,B,2001
 ```
+
+Tick “Show” in a column header on the setup screen to display that field around the speaker's name on the timer screen (the name is always on; by default furigana, name and honorific are on). Fields left of the name column appear above the name, fields to the right appear below it. If the honorific is off, the default honorific is used.
 
 ## Languages
 

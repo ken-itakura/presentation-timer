@@ -17,6 +17,7 @@ Ein Ein-Seiten-Timer, damit sich bei Klassentreffen und ähnlichen Anlässen all
 | Klick auf einen Namen in der rechten Liste | Diese Person starten; wer davor stand, wandert zu „Übersprungen“ |
 | Klick auf einen Namen unter „Übersprungen“ | Diese Person starten |
 | „Anwesend“ unter „Übersprungen“ abwählen | Nach Bestätigung als abwesend markieren und entfernen (der Timer läuft weiter) |
+| Schaltfläche „Pause“ | Countdown anhalten/fortsetzen (die gesamte vergangene Zeit läuft weiter) |
 
 Noch 10 s: jede Sekunde ein Ticken · noch 3 s: schnelle Pieptöne · bei 0 s: Explosionsgeräusch und Hinweis „Zeit abgelaufen!“. Oben rechts steht die gesamte vergangene Zeit, in der rechten Spalte die nächsten 10 Personen.
 
@@ -29,6 +30,8 @@ name,honorific,group,year
 Alex Morgan,,A,2001
 Sam Rivera,Dr.,B,2001
 ```
+
+Setzen Sie im Einstellungsbildschirm bei einer Spaltenüberschrift den Haken bei „Zeigen“, damit dieses Feld auf dem Timer-Bildschirm rund um den Namen der Person erscheint (der Name ist immer aktiv; standardmäßig: Furigana, Name und Anrede). Felder links der Namensspalte stehen über dem Namen, Felder rechts darunter. Ist die Anrede aus, gilt die Standard-Anrede.
 
 ## Sprachen
 

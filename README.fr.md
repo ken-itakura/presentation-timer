@@ -17,6 +17,7 @@ Un minuteur d’une seule page pour que chacun se présente à tour de rôle lor
 | Clic sur un nom de la liste de droite | Lance cette personne ; ceux qui précédaient passent dans « Sautés » |
 | Clic sur un nom de « Sautés » | Lance cette personne |
 | Décocher « Présent » dans « Sautés » | Après confirmation, la personne est marquée absente et retirée (le minuteur continue) |
+| Bouton « Pause » | Met en pause / reprend le compte à rebours (le temps total écoulé continue) |
 
 À 10 s de la fin : un tic par seconde · à 3 s : bips rapides · à 0 s : explosion et étiquette « Temps écoulé ! ». En haut à droite : temps total écoulé ; colonne de droite : les 10 prochaines personnes.
 
@@ -29,6 +30,8 @@ name,honorific,group,year
 Alex Morgan,,A,2001
 Sam Rivera,Dr.,B,2001
 ```
+
+Cochez « Afficher » dans l’en-tête d’une colonne de l’écran de réglages pour afficher ce champ autour du nom de l’intervenant sur l’écran du minuteur (le nom est toujours activé ; par défaut : furigana, nom et civilité). Les champs à gauche de la colonne du nom s’affichent au-dessus, ceux de droite en dessous. Si la civilité est désactivée, la civilité par défaut est utilisée.
 
 ## Langues
 

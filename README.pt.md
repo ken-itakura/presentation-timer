@@ -17,6 +17,7 @@ Um cronômetro de uma única página para que cada pessoa se apresente na sua ve
 | Clicar em um nome na lista da direita | Inicia essa pessoa; quem vinha antes vai para “Pulados” |
 | Clicar em um nome em “Pulados” | Inicia essa pessoa |
 | Desmarcar “Presente” em “Pulados” | Após confirmar, marca como ausente e remove da lista (o cronômetro continua) |
+| Botão “Pausar” | Pausa/retoma a contagem regressiva (o tempo total decorrido continua) |
 
 Faltando 10 s: um tique por segundo · faltando 3 s: bipes rápidos · 0 s: som de explosão e rótulo “Tempo esgotado!”. No canto superior direito aparece o tempo total decorrido; na coluna da direita, as próximas 10 pessoas.
 
@@ -29,6 +30,8 @@ name,honorific,group,year
 Alex Morgan,,A,2001
 Sam Rivera,Dr.,B,2001
 ```
+
+Marque “Mostrar” no cabeçalho de uma coluna na tela de configurações para exibir esse campo em volta do nome do apresentador na tela do cronômetro (o nome está sempre ativado; por padrão: furigana, nome e tratamento). Campos à esquerda da coluna do nome aparecem acima dele e os da direita, abaixo. Com o tratamento desativado, usa-se o tratamento padrão.
 
 ## Idiomas
 
