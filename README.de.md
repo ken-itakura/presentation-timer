@@ -19,7 +19,7 @@ Ein Ein-Seiten-Timer, damit sich bei Klassentreffen und ähnlichen Anlässen all
 | „Anwesend“ unter „Übersprungen“ abwählen | Nach Bestätigung als abwesend markieren und entfernen (der Timer läuft weiter) |
 | Schaltfläche „Pause“ | Countdown anhalten/fortsetzen (die gesamte vergangene Zeit läuft weiter) |
 
-Noch 10 s: jede Sekunde ein Ticken · noch 3 s: schnelle Pieptöne · bei 0 s: Explosionsgeräusch und Hinweis „Zeit abgelaufen!“. Oben rechts steht die gesamte vergangene Zeit, in der rechten Spalte die nächsten 10 Personen.
+Noch 10 s: jede Sekunde ein Ticken · noch 3 s: schnelle Pieptöne · bei 0 s: Explosionsgeräusch und Hinweis „Zeit abgelaufen!“. Oben rechts steht die gesamte vergangene Zeit, in der rechten Spalte die nächsten 10 Personen. Wenn in den Einstellungen „Geschätzte Restzeit anzeigen“ aktiviert ist, erscheint unter der vergangenen Zeit eine Schätzung (alle Wartenden, auch Übersprungene, werden mit der vollen Zeit gerechnet). Standardmäßig aus.
 
 ## CSV-Format
 

@@ -19,7 +19,7 @@ Mezunlar buluşması gibi etkinliklerde herkesin sırayla kendini tanıtması i�
 | “Atlananlar”da “Katılıyor” işaretini kaldırma | Onaydan sonra yok sayılır ve listeden çıkarılır (zamanlayıcı durmaz) |
 | “Duraklat” düğmesi | Geri sayımı duraklatır/devam ettirir (toplam geçen süre işlemeye devam eder) |
 
-Son 10 sn: her saniye tik sesi · son 3 sn: hızlı bip sesleri · 0 sn: patlama sesi ve “Süre doldu!” etiketi. Sağ üstte toplam geçen süre, sağ sütunda sonraki 10 kişi görünür.
+Son 10 sn: her saniye tik sesi · son 3 sn: hızlı bip sesleri · 0 sn: patlama sesi ve “Süre doldu!” etiketi. Sağ üstte toplam geçen süre, sağ sütunda sonraki 10 kişi görünür. Ayarlarda “Tahmini kalan süreyi göster” açılırsa, geçen sürenin altında bir tahmin görünür (bekleyenler ve atlananlar dahil herkes tam süreyle hesaplanır). Varsayılan olarak kapalıdır.
 
 ## CSV biçimi
 

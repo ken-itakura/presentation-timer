@@ -19,7 +19,7 @@ A one-page timer for self-introductions at reunions and similar events. Just ope
 | Uncheck “Present” in the Skipped list | After confirmation, mark them absent and remove them (the timer keeps running) |
 | “Pause” button | Pause / resume the countdown (the total elapsed time keeps running) |
 
-10 s left: a tick every second · 3 s left: rapid beeps · 0 s: explosion sound and a “Time's up” label. The top right shows total elapsed time; the right column shows the next 10 speakers.
+10 s left: a tick every second · 3 s left: rapid beeps · 0 s: explosion sound and a “Time's up” label. The top right shows total elapsed time; the right column shows the next 10 speakers. Optionally, “Show estimated time remaining” in the settings shows an estimate under the elapsed time (everyone waiting, including skipped people, is counted at the full time per speaker). It is off by default.
 
 ## CSV format
 

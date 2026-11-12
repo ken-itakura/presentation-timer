@@ -19,7 +19,7 @@ Un temporizador de una sola página para que cada persona se presente por turnos
 | Desmarcar «Presente» en «Omitidos» | Tras confirmar, se marca como ausente y se quita de la lista (el temporizador sigue) |
 | Botón «Pausa» | Pausa/reanuda la cuenta atrás (el tiempo total transcurrido sigue corriendo) |
 
-Quedan 10 s: un tic por segundo · quedan 3 s: pitidos rápidos · 0 s: explosión y etiqueta «¡Se acabó el tiempo!». Arriba a la derecha se muestra el tiempo total transcurrido y, en la columna derecha, las 10 personas siguientes.
+Quedan 10 s: un tic por segundo · quedan 3 s: pitidos rápidos · 0 s: explosión y etiqueta «¡Se acabó el tiempo!». Arriba a la derecha se muestra el tiempo total transcurrido y, en la columna derecha, las 10 personas siguientes. Si activas «Mostrar tiempo restante estimado» en los ajustes, se muestra una estimación bajo el tiempo transcurrido (se cuenta a todos los que esperan, incluidos los omitidos, con su tiempo completo). Está desactivado por defecto.
 
 ## Formato CSV
 

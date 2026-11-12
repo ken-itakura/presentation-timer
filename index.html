@@ -55,6 +55,9 @@ td.num{color:var(--muted);width:36px;text-align:end}
 #run header h1{margin:0;font-size:clamp(1.8rem,6vh,3.6rem);letter-spacing:.1em}
 #elapsed{position:absolute;inset-inline-end:18px;top:12px;color:var(--muted);font-size:.95rem;font-variant-numeric:tabular-nums}
 #elapsed b{color:var(--text);font-size:1.15rem;margin-left:4px}
+#eta{font-size:.75rem;margin-top:2px;text-align:end}
+#eta b{font-size:.9rem}
+.inl{display:flex;align-items:center;gap:6px;height:36px;font-size:.9rem;color:var(--text)}
 #stage{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 20px;min-width:0;position:relative}
 #timeup{height:min(8vh,64px);display:flex;align-items:center}
 #timeup span{background:var(--danger);color:#fff;font-weight:800;font-size:min(6vh,3rem);padding:.1em .8em;border-radius:12px;
@@ -113,6 +116,8 @@ td.num{color:var(--muted);width:36px;text-align:end}
   #run header h1{font-size:1.7rem;padding-inline-end:84px;text-align:start}
   #elapsed{top:10px;inset-inline-end:12px;font-size:.75rem}
   #elapsed b{font-size:.95rem}
+  #eta{font-size:.65rem}
+  #eta b{font-size:.8rem}
   #stage{padding:4px 12px}
   #timeup{height:6dvh}
   #timeup span{font-size:min(4dvh,1.5rem)}
@@ -163,6 +168,7 @@ td.num{color:var(--muted);width:36px;text-align:end}
       <label><span data-i18n="lHonPos"></span><select id="setHonPos"></select></label>
       <label><span data-i18n="lNameCol"></span><select id="setNameCol"></select></label>
       <label><span data-i18n="lTitleCol"></span><select id="setTitleCol"></select></label>
+      <label><span>&nbsp;</span><span class="inl"><input id="setEta" type="checkbox"><span data-i18n="lEta"></span></span></label>
       <label><span>&nbsp;</span><button class="btn" id="muteBtn" type="button"></button></label>
       <label><span>&nbsp;</span><button class="btn" id="testSoundBtn" type="button" data-i18n="test"></button></label>
     </div>
@@ -198,7 +204,8 @@ td.num{color:var(--muted);width:36px;text-align:end}
 <div id="run" class="hidden">
   <header>
     <h1 id="runTitle"></h1>
-    <div id="elapsed"><span data-i18n="elapsed"></span> <b id="elapsedVal">0:00</b></div>
+    <div id="elapsed"><div><span data-i18n="elapsed"></span> <b id="elapsedVal">0:00</b></div>
+      <div id="eta" class="hidden"><span data-i18n="eta"></span> <b id="etaVal">0:00</b></div></div>
   </header>
   <section id="stage">
     <div id="timeup"></div>
@@ -266,7 +273,8 @@ const I18N = {
   cAbs:"{name}を欠席にしますか？", yes:"はい", no:"いいえ", cClr:"リストを全消去しますか？", cRst:"発表を最初からやり直しますか？（経過時間もリセット）",
   pCol:"追加する列の名前", noData:"データがありません", unn:"(名前なし)", del:"この行を削除", cName:"名前", cHon:"敬称", cGrp:"クラス", cYear:"卒業年", defT:"同窓会",
   pause:"一時停止", resume:"再開", paused:"一時停止中", show:"表示",
-  showHint:"各列の「表示」にチェックした項目を、本番画面の発表者の名前まわりに表示します。名前は常にONです。名前の列より左の項目は名前の上に、右の項目は下に出ます。敬称がOFFのときは、標準の敬称を使います。"
+  showHint:"各列の「表示」にチェックした項目を、本番画面の発表者の名前まわりに表示します。名前は常にONです。名前の列より左の項目は名前の上に、右の項目は下に出ます。敬称がOFFのときは、標準の敬称を使います。",
+  lEta:"残り予想時間を表示", eta:"残り予想"
 },
 "en": {
   app:"Presentation Timer", sub:"Load a CSV → check attendance and order → press “Go to timer”. Press Space to start each speaker.",
@@ -282,7 +290,8 @@ const I18N = {
   cAbs:"Mark {name} as absent?", yes:"Yes", no:"No", cClr:"Clear the whole list?", cRst:"Restart from the beginning? (elapsed time is reset too)",
   pCol:"Name of the new column", noData:"No data found.", unn:"(no name)", del:"Delete this row", cName:"Name", cHon:"Honorific", cGrp:"Group", cYear:"Year", defT:"Class Reunion",
   pause:"Pause", resume:"Resume", paused:"Paused", show:"Show",
-  showHint:"Fields ticked “Show” are displayed around the speaker's name on the timer screen. The name is always on. Fields left of the name column appear above it, fields to the right appear below it. If the honorific is off, the default honorific is used."
+  showHint:"Fields ticked “Show” are displayed around the speaker's name on the timer screen. The name is always on. Fields left of the name column appear above it, fields to the right appear below it. If the honorific is off, the default honorific is used.",
+  lEta:"Show estimated time remaining", eta:"Est. left"
 },
 "zh-CN": {
   app:"自我介绍计时器", sub:"导入 CSV → 确认出席和顺序 → 点击“进入计时”。正式开始后按空格键开始每位发言。",
@@ -298,7 +307,8 @@ const I18N = {
   cAbs:"要将{name}设为缺席吗？", yes:"是", no:"否", cClr:"要清空整个名单吗？", cRst:"要从头重新开始吗？（已用时间也会重置）",
   pCol:"新列的名称", noData:"没有数据。", unn:"（无姓名）", del:"删除此行", cName:"姓名", cHon:"称谓", cGrp:"班级", cYear:"毕业年份", defT:"同学聚会",
   pause:"暂停", resume:"继续", paused:"已暂停", show:"显示",
-  showHint:"勾选各列“显示”的项目，会在计时界面的发言者姓名周围显示。姓名始终开启。姓名列左侧的项目显示在姓名上方，右侧的项目显示在下方。称谓关闭时使用默认称谓。"
+  showHint:"勾选各列“显示”的项目，会在计时界面的发言者姓名周围显示。姓名始终开启。姓名列左侧的项目显示在姓名上方，右侧的项目显示在下方。称谓关闭时使用默认称谓。",
+  lEta:"显示预计剩余时间", eta:"预计剩余"
 },
 "zh-TW": {
   app:"自我介紹計時器", sub:"匯入 CSV → 確認出席與順序 → 按「進入計時」。正式開始後按空白鍵開始每位發言。",
@@ -314,7 +324,8 @@ const I18N = {
   cAbs:"要將{name}設為缺席嗎？", yes:"是", no:"否", cClr:"要清空整個名單嗎？", cRst:"要從頭重新開始嗎？（已用時間也會重置）",
   pCol:"新欄位的名稱", noData:"沒有資料。", unn:"（無姓名）", del:"刪除此列", cName:"姓名", cHon:"稱謂", cGrp:"班級", cYear:"畢業年份", defT:"同學會",
   pause:"暫停", resume:"繼續", paused:"已暫停", show:"顯示",
-  showHint:"勾選各欄「顯示」的項目，會在計時畫面的發言者姓名周圍顯示。姓名一律開啟。姓名欄左側的項目顯示在姓名上方，右側的項目顯示在下方。稱謂關閉時使用預設稱謂。"
+  showHint:"勾選各欄「顯示」的項目，會在計時畫面的發言者姓名周圍顯示。姓名一律開啟。姓名欄左側的項目顯示在姓名上方，右側的項目顯示在下方。稱謂關閉時使用預設稱謂。",
+  lEta:"顯示預計剩餘時間", eta:"預計剩餘"
 },
 "hi": {
   app:"परिचय टाइमर", sub:"CSV लोड करें → उपस्थिति और क्रम जाँचें → “टाइमर पर जाएँ” दबाएँ। हर वक्ता को शुरू करने के लिए स्पेस दबाएँ।",
@@ -330,7 +341,8 @@ const I18N = {
   cAbs:"क्या {name} को अनुपस्थित करें?", yes:"हाँ", no:"नहीं", cClr:"पूरी सूची हटाएँ?", cRst:"शुरू से दोबारा करें? (बीता समय भी रीसेट होगा)",
   pCol:"नए कॉलम का नाम", noData:"कोई डेटा नहीं मिला।", unn:"(बिना नाम)", del:"यह पंक्ति हटाएँ", cName:"नाम", cHon:"सम्मान-सूचक", cGrp:"समूह", cYear:"वर्ष", defT:"पुनर्मिलन समारोह",
   pause:"रोकें", resume:"जारी रखें", paused:"रुका हुआ", show:"दिखाएँ",
-  showHint:"जिन कॉलम में “दिखाएँ” चुना है, वे टाइमर स्क्रीन पर वक्ता के नाम के आसपास दिखते हैं। नाम हमेशा चालू रहता है। नाम वाले कॉलम के बाईं ओर के कॉलम नाम के ऊपर और दाईं ओर के कॉलम नीचे दिखते हैं। सम्मान-सूचक बंद हो तो डिफ़ॉल्ट सम्मान-सूचक इस्तेमाल होता है।"
+  showHint:"जिन कॉलम में “दिखाएँ” चुना है, वे टाइमर स्क्रीन पर वक्ता के नाम के आसपास दिखते हैं। नाम हमेशा चालू रहता है। नाम वाले कॉलम के बाईं ओर के कॉलम नाम के ऊपर और दाईं ओर के कॉलम नीचे दिखते हैं। सम्मान-सूचक बंद हो तो डिफ़ॉल्ट सम्मान-सूचक इस्तेमाल होता है।",
+  lEta:"अनुमानित शेष समय दिखाएँ", eta:"अनुमानित शेष"
 },
 "es": {
   app:"Temporizador de presentaciones", sub:"Carga un CSV → revisa asistencia y orden → pulsa «Ir al temporizador». Pulsa Espacio para iniciar a cada persona.",
@@ -346,7 +358,8 @@ const I18N = {
   cAbs:"¿Marcar a {name} como ausente?", yes:"Sí", no:"No", cClr:"¿Borrar toda la lista?", cRst:"¿Reiniciar desde el principio? (también se reinicia el tiempo transcurrido)",
   pCol:"Nombre de la nueva columna", noData:"No hay datos.", unn:"(sin nombre)", del:"Eliminar esta fila", cName:"Nombre", cHon:"Tratamiento", cGrp:"Grupo", cYear:"Año", defT:"Reencuentro",
   pause:"Pausa", resume:"Reanudar", paused:"En pausa", show:"Mostrar",
-  showHint:"Los campos marcados con «Mostrar» aparecen junto al nombre del orador en la pantalla del temporizador. El nombre siempre está activado. Los campos a la izquierda de la columna del nombre aparecen encima y los de la derecha, debajo. Si el tratamiento está desactivado, se usa el tratamiento por defecto."
+  showHint:"Los campos marcados con «Mostrar» aparecen junto al nombre del orador en la pantalla del temporizador. El nombre siempre está activado. Los campos a la izquierda de la columna del nombre aparecen encima y los de la derecha, debajo. Si el tratamiento está desactivado, se usa el tratamiento por defecto.",
+  lEta:"Mostrar tiempo restante estimado", eta:"Restante est."
 },
 "fr": {
   app:"Minuteur de présentation", sub:"Chargez un CSV → vérifiez présences et ordre → cliquez sur « Aller au minuteur ». Appuyez sur Espace pour lancer chaque intervenant.",
@@ -362,7 +375,8 @@ const I18N = {
   cAbs:"Marquer {name} comme absent(e) ?", yes:"Oui", no:"Non", cClr:"Effacer toute la liste ?", cRst:"Recommencer depuis le début ? (le temps écoulé est aussi réinitialisé)",
   pCol:"Nom de la nouvelle colonne", noData:"Aucune donnée.", unn:"(sans nom)", del:"Supprimer cette ligne", cName:"Nom", cHon:"Civilité", cGrp:"Groupe", cYear:"Année", defT:"Retrouvailles",
   pause:"Pause", resume:"Reprendre", paused:"En pause", show:"Afficher",
-  showHint:"Les champs cochés « Afficher » apparaissent autour du nom de l’intervenant sur l’écran du minuteur. Le nom est toujours activé. Les champs à gauche de la colonne du nom s’affichent au-dessus, ceux de droite en dessous. Si la civilité est désactivée, la civilité par défaut est utilisée."
+  showHint:"Les champs cochés « Afficher » apparaissent autour du nom de l’intervenant sur l’écran du minuteur. Le nom est toujours activé. Les champs à gauche de la colonne du nom s’affichent au-dessus, ceux de droite en dessous. Si la civilité est désactivée, la civilité par défaut est utilisée.",
+  lEta:"Afficher le temps restant estimé", eta:"Reste est."
 },
 "ar": {
   app:"مؤقّت التعريف بالنفس", sub:"حمّل ملف CSV ← راجع الحضور والترتيب ← اضغط «الانتقال إلى المؤقّت». اضغط مفتاح المسافة لبدء كل متحدث.",
@@ -378,7 +392,8 @@ const I18N = {
   cAbs:"هل تريد تسجيل {name} كغائب؟", yes:"نعم", no:"لا", cClr:"هل تريد مسح القائمة بالكامل؟", cRst:"هل تريد البدء من جديد؟ (سيُعاد ضبط الوقت المنقضي أيضًا)",
   pCol:"اسم العمود الجديد", noData:"لا توجد بيانات.", unn:"(بلا اسم)", del:"حذف هذا الصف", cName:"الاسم", cHon:"اللقب", cGrp:"المجموعة", cYear:"السنة", defT:"لمّ الشمل",
   pause:"إيقاف مؤقت", resume:"استئناف", paused:"متوقف مؤقتًا", show:"عرض",
-  showHint:"تظهر الحقول المحددة بـ«عرض» حول اسم المتحدث في شاشة المؤقّت. الاسم مفعّل دائمًا. تظهر الحقول الواقعة قبل عمود الاسم فوقه، والواقعة بعده تحته. إذا أُلغي اللقب يُستخدم اللقب الافتراضي."
+  showHint:"تظهر الحقول المحددة بـ«عرض» حول اسم المتحدث في شاشة المؤقّت. الاسم مفعّل دائمًا. تظهر الحقول الواقعة قبل عمود الاسم فوقه، والواقعة بعده تحته. إذا أُلغي اللقب يُستخدم اللقب الافتراضي.",
+  lEta:"عرض الوقت المتبقي المقدَّر", eta:"المتبقي (تقديري)"
 },
 "bn": {
   app:"পরিচিতি টাইমার", sub:"CSV লোড করুন → উপস্থিতি ও ক্রম দেখে নিন → “টাইমারে যান” চাপুন। প্রত্যেক বক্তাকে শুরু করতে স্পেস চাপুন।",
@@ -394,7 +409,8 @@ const I18N = {
   cAbs:"{name} কে অনুপস্থিত করবেন?", yes:"হ্যাঁ", no:"না", cClr:"পুরো তালিকা মুছবেন?", cRst:"প্রথম থেকে আবার শুরু করবেন? (অতিবাহিত সময়ও রিসেট হবে)",
   pCol:"নতুন কলামের নাম", noData:"কোনো ডেটা নেই।", unn:"(নামহীন)", del:"এই সারি মুছুন", cName:"নাম", cHon:"সম্বোধন", cGrp:"দল", cYear:"বছর", defT:"পুনর্মিলনী",
   pause:"বিরতি", resume:"আবার শুরু", paused:"বিরতিতে", show:"দেখান",
-  showHint:"“দেখান” টিক দেওয়া ফিল্ডগুলো টাইমার স্ক্রিনে বক্তার নামের আশেপাশে দেখা যায়। নাম সবসময় চালু থাকে। নামের কলামের বাঁয়ের ফিল্ড নামের উপরে এবং ডানের ফিল্ড নিচে দেখা যায়। সম্বোধন বন্ধ থাকলে ডিফল্ট সম্বোধন ব্যবহৃত হয়।"
+  showHint:"“দেখান” টিক দেওয়া ফিল্ডগুলো টাইমার স্ক্রিনে বক্তার নামের আশেপাশে দেখা যায়। নাম সবসময় চালু থাকে। নামের কলামের বাঁয়ের ফিল্ড নামের উপরে এবং ডানের ফিল্ড নিচে দেখা যায়। সম্বোধন বন্ধ থাকলে ডিফল্ট সম্বোধন ব্যবহৃত হয়।",
+  lEta:"আনুমানিক অবশিষ্ট সময় দেখান", eta:"আনু. বাকি"
 },
 "pt": {
   app:"Cronômetro de apresentações", sub:"Carregue um CSV → confira presença e ordem → clique em “Ir para o cronômetro”. Pressione Espaço para iniciar cada pessoa.",
@@ -410,7 +426,8 @@ const I18N = {
   cAbs:"Marcar {name} como ausente?", yes:"Sim", no:"Não", cClr:"Limpar a lista inteira?", cRst:"Recomeçar do início? (o tempo decorrido também será zerado)",
   pCol:"Nome da nova coluna", noData:"Nenhum dado.", unn:"(sem nome)", del:"Excluir esta linha", cName:"Nome", cHon:"Tratamento", cGrp:"Grupo", cYear:"Ano", defT:"Reencontro",
   pause:"Pausar", resume:"Retomar", paused:"Pausado", show:"Mostrar",
-  showHint:"Os campos marcados em “Mostrar” aparecem em volta do nome do apresentador na tela do cronômetro. O nome está sempre ativado. Campos à esquerda da coluna do nome aparecem acima dele e os da direita, abaixo. Com o tratamento desativado, usa-se o tratamento padrão."
+  showHint:"Os campos marcados em “Mostrar” aparecem em volta do nome do apresentador na tela do cronômetro. O nome está sempre ativado. Campos à esquerda da coluna do nome aparecem acima dele e os da direita, abaixo. Com o tratamento desativado, usa-se o tratamento padrão.",
+  lEta:"Mostrar tempo restante estimado", eta:"Restante est."
 },
 "ru": {
   app:"Таймер выступлений", sub:"Загрузите CSV → проверьте присутствие и порядок → нажмите «К таймеру». Пробел запускает каждого выступающего.",
@@ -426,7 +443,8 @@ const I18N = {
   cAbs:"Отметить {name} как отсутствующего?", yes:"Да", no:"Нет", cClr:"Очистить весь список?", cRst:"Начать сначала? (прошедшее время тоже сбросится)",
   pCol:"Название нового столбца", noData:"Данных нет.", unn:"(без имени)", del:"Удалить строку", cName:"Имя", cHon:"Обращение", cGrp:"Группа", cYear:"Год", defT:"Встреча выпускников",
   pause:"Пауза", resume:"Продолжить", paused:"Пауза", show:"Показ.",
-  showHint:"Поля, отмеченные «Показ.», выводятся вокруг имени выступающего на экране таймера. Имя включено всегда. Поля слева от столбца имени отображаются над ним, справа — под ним. Если обращение выключено, используется обращение по умолчанию."
+  showHint:"Поля, отмеченные «Показ.», выводятся вокруг имени выступающего на экране таймера. Имя включено всегда. Поля слева от столбца имени отображаются над ним, справа — под ним. Если обращение выключено, используется обращение по умолчанию.",
+  lEta:"Показывать оценку оставшегося времени", eta:"Осталось (оценка)"
 },
 "id": {
   app:"Timer Presentasi", sub:"Muat CSV → periksa kehadiran & urutan → tekan “Ke timer”. Tekan Spasi untuk memulai tiap pembicara.",
@@ -442,7 +460,8 @@ const I18N = {
   cAbs:"Tandai {name} sebagai tidak hadir?", yes:"Ya", no:"Tidak", cClr:"Hapus seluruh daftar?", cRst:"Ulangi dari awal? (waktu berlalu juga direset)",
   pCol:"Nama kolom baru", noData:"Tidak ada data.", unn:"(tanpa nama)", del:"Hapus baris ini", cName:"Nama", cHon:"Sapaan", cGrp:"Kelompok", cYear:"Tahun", defT:"Reuni",
   pause:"Jeda", resume:"Lanjut", paused:"Dijeda", show:"Tampil",
-  showHint:"Kolom yang dicentang “Tampil” ditampilkan di sekitar nama pembicara pada layar timer. Nama selalu aktif. Kolom di kiri kolom nama muncul di atasnya, kolom di kanan muncul di bawahnya. Jika sapaan dimatikan, dipakai sapaan default."
+  showHint:"Kolom yang dicentang “Tampil” ditampilkan di sekitar nama pembicara pada layar timer. Nama selalu aktif. Kolom di kiri kolom nama muncul di atasnya, kolom di kanan muncul di bawahnya. Jika sapaan dimatikan, dipakai sapaan default.",
+  lEta:"Tampilkan perkiraan sisa waktu", eta:"Perkiraan sisa"
 },
 "de": {
   app:"Vorstellungs-Timer", sub:"CSV laden → Anwesenheit und Reihenfolge prüfen → „Zum Timer“ klicken. Mit der Leertaste startet jede Person.",
@@ -458,7 +477,8 @@ const I18N = {
   cAbs:"{name} als abwesend markieren?", yes:"Ja", no:"Nein", cClr:"Gesamte Liste löschen?", cRst:"Von vorn beginnen? (Die vergangene Zeit wird ebenfalls zurückgesetzt)",
   pCol:"Name der neuen Spalte", noData:"Keine Daten.", unn:"(ohne Namen)", del:"Diese Zeile löschen", cName:"Name", cHon:"Anrede", cGrp:"Gruppe", cYear:"Jahr", defT:"Klassentreffen",
   pause:"Pause", resume:"Fortsetzen", paused:"Pausiert", show:"Zeigen",
-  showHint:"Mit „Zeigen“ markierte Felder erscheinen auf dem Timer-Bildschirm rund um den Namen der Person. Der Name ist immer aktiv. Felder links der Namensspalte stehen über dem Namen, Felder rechts darunter. Ist die Anrede aus, gilt die Standard-Anrede."
+  showHint:"Mit „Zeigen“ markierte Felder erscheinen auf dem Timer-Bildschirm rund um den Namen der Person. Der Name ist immer aktiv. Felder links der Namensspalte stehen über dem Namen, Felder rechts darunter. Ist die Anrede aus, gilt die Standard-Anrede.",
+  lEta:"Geschätzte Restzeit anzeigen", eta:"Rest (geschätzt)"
 },
 "ko": {
   app:"자기소개 타이머", sub:"CSV 불러오기 → 출석과 순서 확인 → ‘타이머로 이동’ 클릭. 스페이스 키로 각 발표자를 시작합니다.",
@@ -474,7 +494,8 @@ const I18N = {
   cAbs:"{name}을(를) 결석 처리할까요?", yes:"예", no:"아니요", cClr:"목록을 모두 지울까요?", cRst:"처음부터 다시 시작할까요? (경과 시간도 초기화됩니다)",
   pCol:"추가할 열 이름", noData:"데이터가 없습니다.", unn:"(이름 없음)", del:"이 행 삭제", cName:"이름", cHon:"호칭", cGrp:"반", cYear:"졸업 연도", defT:"동창회",
   pause:"일시정지", resume:"재개", paused:"일시정지 중", show:"표시",
-  showHint:"‘표시’를 체크한 항목은 타이머 화면의 발표자 이름 주변에 표시됩니다. 이름은 항상 켜져 있습니다. 이름 열보다 왼쪽 항목은 이름 위에, 오른쪽 항목은 아래에 나옵니다. 호칭을 끄면 기본 호칭을 사용합니다."
+  showHint:"‘표시’를 체크한 항목은 타이머 화면의 발표자 이름 주변에 표시됩니다. 이름은 항상 켜져 있습니다. 이름 열보다 왼쪽 항목은 이름 위에, 오른쪽 항목은 아래에 나옵니다. 호칭을 끄면 기본 호칭을 사용합니다.",
+  lEta:"예상 남은 시간 표시", eta:"예상 남은 시간"
 },
 "tr": {
   app:"Tanıtım Zamanlayıcısı", sub:"CSV yükleyin → katılım ve sırayı kontrol edin → “Zamanlayıcıya git”e basın. Her konuşmacıyı başlatmak için Boşluk tuşuna basın.",
@@ -490,7 +511,8 @@ const I18N = {
   cAbs:"{name} kişisini yok olarak işaretleyelim mi?", yes:"Evet", no:"Hayır", cClr:"Tüm liste silinsin mi?", cRst:"Baştan başlansın mı? (geçen süre de sıfırlanır)",
   pCol:"Yeni sütunun adı", noData:"Veri yok.", unn:"(isimsiz)", del:"Bu satırı sil", cName:"İsim", cHon:"Hitap", cGrp:"Grup", cYear:"Yıl", defT:"Mezunlar Buluşması",
   pause:"Duraklat", resume:"Devam", paused:"Duraklatıldı", show:"Göster",
-  showHint:"“Göster” işaretli alanlar, zamanlayıcı ekranında konuşmacının isminin çevresinde görünür. İsim her zaman açıktır. İsim sütununun solundaki alanlar ismin üstünde, sağındakiler altında görünür. Hitap kapalıysa varsayılan hitap kullanılır."
+  showHint:"“Göster” işaretli alanlar, zamanlayıcı ekranında konuşmacının isminin çevresinde görünür. İsim her zaman açıktır. İsim sütununun solundaki alanlar ismin üstünde, sağındakiler altında görünür. Hitap kapalıysa varsayılan hitap kullanılır.",
+  lEta:"Tahmini kalan süreyi göster", eta:"Tahmini kalan"
 },
 "vi": {
   app:"Bộ hẹn giờ giới thiệu", sub:"Tải CSV → kiểm tra điểm danh và thứ tự → bấm “Vào bộ hẹn giờ”. Nhấn Space để bắt đầu từng người.",
@@ -506,7 +528,8 @@ const I18N = {
   cAbs:"Đánh dấu {name} là vắng mặt?", yes:"Có", no:"Không", cClr:"Xóa toàn bộ danh sách?", cRst:"Bắt đầu lại từ đầu? (thời gian đã trôi qua cũng được đặt lại)",
   pCol:"Tên cột mới", noData:"Không có dữ liệu.", unn:"(không tên)", del:"Xóa dòng này", cName:"Tên", cHon:"Danh xưng", cGrp:"Nhóm", cYear:"Năm", defT:"Họp lớp",
   pause:"Tạm dừng", resume:"Tiếp tục", paused:"Đã tạm dừng", show:"Hiện",
-  showHint:"Các trường được tích “Hiện” sẽ hiển thị quanh tên người nói trên màn hình hẹn giờ. Tên luôn bật. Trường nằm bên trái cột tên hiện phía trên tên, bên phải hiện phía dưới. Nếu tắt danh xưng, sẽ dùng danh xưng mặc định."
+  showHint:"Các trường được tích “Hiện” sẽ hiển thị quanh tên người nói trên màn hình hẹn giờ. Tên luôn bật. Trường nằm bên trái cột tên hiện phía trên tên, bên phải hiện phía dưới. Nếu tắt danh xưng, sẽ dùng danh xưng mặc định.",
+  lEta:"Hiện thời gian còn lại dự kiến", eta:"Còn lại (dự kiến)"
 }
 };
 
@@ -553,7 +576,7 @@ const state = {
   view: "setup",
   muted: false,
   lang: "ja",
-  s: { title: "同窓会", dur: 45, hon: "さん", honPos: null, nameCol: 0, titleCol: -1, sortCol: -1, sortDir: 1 },
+  s: { title: "同窓会", dur: 45, hon: "さん", honPos: null, showEta: false, nameCol: 0, titleCol: -1, sortCol: -1, sortDir: 1 },
   cols: ["名前", "敬称"],
   show: [true, true],
   people: [],
@@ -698,6 +721,7 @@ function renderSetup() {
   fillSelect($("setHonPos"), [["before", t("pBefore")], ["after", t("pAfter")]], effPos());
   fillSelect($("setLang"), Object.keys(LANGS).map(k => [k, LANGS[k].n]), state.lang);
   $("muteBtn").textContent = t(state.muted ? "soundOff" : "soundOn");
+  $("setEta").checked = !!s.showEta;
   renderTable();
 }
 function renderTable() {
@@ -858,6 +882,12 @@ function startSpeaker(id) {
 function updateClock() {
   const r = state.run;
   $("elapsedVal").textContent = r.startedAt ? fmtClock((Date.now() - r.startedAt) / 1000) : "0:00";
+  $("eta").classList.toggle("hidden", !state.s.showEta);
+  if (state.s.showEta) {
+    // 残り予想: 発表中の人の残り + 待機中・スキップ中の全員が持ち時間いっぱい使う想定
+    const curRem = r.cur ? (r.paused ? r.pausedRemain : Math.max(0, r.endAt - Date.now())) / 1000 : 0;
+    $("etaVal").textContent = fmtClock(Math.ceil(curRem) + (r.queue.length + r.skipped.length) * state.s.dur);
+  }
   const cnt = $("count"), bar = $("bar");
   if (!r.cur) {
     cnt.textContent = fmtCount(state.s.dur); cnt.className = ""; bar.className = ""; bar.firstElementChild.style.transform = "scaleX(1)";
@@ -1011,6 +1041,7 @@ $("sortCol").onchange = e => { state.s.sortCol = +e.target.value; applySort(); s
 $("sortDir").onchange = e => { state.s.sortDir = +e.target.value; applySort(); save(); renderTable(); };
 $("muteBtn").onclick = () => { state.muted = !state.muted; $("muteBtn").textContent = t(state.muted ? "soundOff" : "soundOn"); save(); };
 $("setLang").onchange = e => setLang(e.target.value);
+$("setEta").onchange = e => { state.s.showEta = e.target.checked; save(); };
 $("setHonPos").onchange = e => { state.s.honPos = e.target.value; save(); };
 $("testSoundBtn").onclick = testSounds;
 $("loadBtn").onclick = () => $("file").click();

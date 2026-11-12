@@ -19,7 +19,7 @@ Un minuteur d’une seule page pour que chacun se présente à tour de rôle lor
 | Décocher « Présent » dans « Sautés » | Après confirmation, la personne est marquée absente et retirée (le minuteur continue) |
 | Bouton « Pause » | Met en pause / reprend le compte à rebours (le temps total écoulé continue) |
 
-À 10 s de la fin : un tic par seconde · à 3 s : bips rapides · à 0 s : explosion et étiquette « Temps écoulé ! ». En haut à droite : temps total écoulé ; colonne de droite : les 10 prochaines personnes.
+À 10 s de la fin : un tic par seconde · à 3 s : bips rapides · à 0 s : explosion et étiquette « Temps écoulé ! ». En haut à droite : temps total écoulé ; colonne de droite : les 10 prochaines personnes. Si vous activez « Afficher le temps restant estimé » dans les réglages, une estimation s’affiche sous le temps écoulé (toutes les personnes en attente, y compris celles sautées, sont comptées avec leur durée complète). Désactivé par défaut.
 
 ## Format CSV
 

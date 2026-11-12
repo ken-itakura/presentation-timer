@@ -19,7 +19,7 @@ Bộ hẹn giờ một trang để mọi người lần lượt giới thiệu b
 | Bỏ chọn “Có mặt” trong “Bị bỏ qua” | Sau khi xác nhận, đánh dấu vắng mặt và xóa khỏi danh sách (bộ hẹn giờ vẫn chạy) |
 | Nút “Tạm dừng” | Tạm dừng/tiếp tục đếm ngược (tổng thời gian đã trôi qua vẫn chạy) |
 
-Còn 10 giây: tiếng tích mỗi giây · còn 3 giây: tiếng bíp dồn dập · 0 giây: tiếng nổ và nhãn “Hết giờ!”. Góc trên bên phải hiển thị tổng thời gian đã trôi qua; cột bên phải hiển thị 10 người tiếp theo.
+Còn 10 giây: tiếng tích mỗi giây · còn 3 giây: tiếng bíp dồn dập · 0 giây: tiếng nổ và nhãn “Hết giờ!”. Góc trên bên phải hiển thị tổng thời gian đã trôi qua; cột bên phải hiển thị 10 người tiếp theo. Khi bật “Hiện thời gian còn lại dự kiến” trong cài đặt, ước tính sẽ hiện dưới thời gian đã trôi qua (mọi người đang chờ, kể cả người bị bỏ qua, được tính đủ thời gian). Mặc định là tắt.
 
 ## Định dạng CSV
 

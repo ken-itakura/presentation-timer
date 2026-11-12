@@ -19,7 +19,7 @@ Um cronômetro de uma única página para que cada pessoa se apresente na sua ve
 | Desmarcar “Presente” em “Pulados” | Após confirmar, marca como ausente e remove da lista (o cronômetro continua) |
 | Botão “Pausar” | Pausa/retoma a contagem regressiva (o tempo total decorrido continua) |
 
-Faltando 10 s: um tique por segundo · faltando 3 s: bipes rápidos · 0 s: som de explosão e rótulo “Tempo esgotado!”. No canto superior direito aparece o tempo total decorrido; na coluna da direita, as próximas 10 pessoas.
+Faltando 10 s: um tique por segundo · faltando 3 s: bipes rápidos · 0 s: som de explosão e rótulo “Tempo esgotado!”. No canto superior direito aparece o tempo total decorrido; na coluna da direita, as próximas 10 pessoas. Ao ativar “Mostrar tempo restante estimado” nas configurações, uma estimativa aparece abaixo do tempo decorrido (todos que aguardam, inclusive os pulados, são contados com o tempo completo). Vem desativado por padrão.
 
 ## Formato CSV
 

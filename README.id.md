@@ -19,7 +19,7 @@ Timer satu halaman untuk perkenalan diri bergiliran di acara reuni dan sejenisny
 | Hapus centang “Hadir” di “Dilewati” | Setelah konfirmasi, ditandai tidak hadir dan dihapus dari daftar (timer tetap berjalan) |
 | Tombol “Jeda” | Menjeda/melanjutkan hitung mundur (total waktu berlalu tetap berjalan) |
 
-Sisa 10 detik: tik tiap detik · sisa 3 detik: bip cepat · 0 detik: suara ledakan dan label “Waktu habis!”. Kanan atas menampilkan total waktu berlalu; kolom kanan menampilkan 10 pembicara berikutnya.
+Sisa 10 detik: tik tiap detik · sisa 3 detik: bip cepat · 0 detik: suara ledakan dan label “Waktu habis!”. Kanan atas menampilkan total waktu berlalu; kolom kanan menampilkan 10 pembicara berikutnya. Jika “Tampilkan perkiraan sisa waktu” diaktifkan di pengaturan, perkiraan ditampilkan di bawah waktu berlalu (semua yang menunggu, termasuk yang dilewati, dihitung dengan waktu penuh). Default: nonaktif.
 
 ## Format CSV
 
