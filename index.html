@@ -52,19 +52,19 @@ td.num{color:var(--muted);width:36px;text-align:end}
 /* ---------- run ---------- */
 #run{height:100vh;display:grid;grid-template-columns:1fr 340px;grid-template-rows:auto 1fr;overflow:hidden}
 #run header{grid-column:1/3;position:relative;text-align:center;padding:14px 20px 4px}
-#run header h1{margin:0;font-size:clamp(1.4rem,3.2vh,2.4rem);letter-spacing:.1em}
+#run header h1{margin:0;font-size:clamp(1.8rem,6vh,3.6rem);letter-spacing:.1em}
 #elapsed{position:absolute;inset-inline-end:18px;top:12px;color:var(--muted);font-size:.95rem;font-variant-numeric:tabular-nums}
 #elapsed b{color:var(--text);font-size:1.15rem;margin-left:4px}
 #stage{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 20px;min-width:0;position:relative}
-#timeup{height:min(9vh,70px);display:flex;align-items:center}
+#timeup{height:min(8vh,64px);display:flex;align-items:center}
 #timeup span{background:var(--danger);color:#fff;font-weight:800;font-size:min(6vh,3rem);padding:.1em .8em;border-radius:12px;
   transform:rotate(-3deg);box-shadow:0 6px 24px rgba(255,77,94,.5);animation:pop .35s ease-out}
 @keyframes pop{0%{transform:scale(2) rotate(-12deg);opacity:0}100%{transform:scale(1) rotate(-3deg);opacity:1}}
-#nameBig{font-size:min(12vh,7vw);font-weight:800;text-align:center;line-height:1.2;word-break:break-all;margin:.1em 0}
+#nameBig{font-size:min(11vh,7vw);font-weight:800;text-align:center;line-height:1.2;word-break:break-all;margin:.1em 0}
 #nameBig small{font-size:.55em;font-weight:600;color:var(--muted)}
 #nameBig small.post{margin-inline-start:.25em}
 #nameBig small.pre{margin-inline-end:.25em}
-#count{font-size:min(38vh,24vw);font-weight:800;line-height:1;font-variant-numeric:tabular-nums;margin:.02em 0;transition:color .2s}
+#count{font-size:min(33vh,23vw);font-weight:800;line-height:1;font-variant-numeric:tabular-nums;margin:.02em 0;transition:color .2s}
 #count.low{color:var(--warn)}
 #count.crit{color:var(--danger);animation:pulse .5s infinite alternate}
 #count.over{color:var(--danger)}
@@ -72,6 +72,15 @@ td.num{color:var(--muted);width:36px;text-align:end}
 #bar{width:min(70%,900px);height:10px;background:var(--panel2);border-radius:5px;overflow:hidden;margin:10px 0 18px}
 #bar i{display:block;height:100%;width:100%;background:var(--ok);transform-origin:left;transition:background .2s}
 #bar.low i{background:var(--warn)} #bar.crit i,#bar.over i{background:var(--danger)}
+#startRow{display:flex;align-items:center;justify-content:center;gap:14px}
+#pauseBtn{font-size:min(2.4vh,1rem);padding:.5em 1.1em;white-space:nowrap}
+.btn:disabled{opacity:.4;cursor:default}
+.info{font-size:min(3.4vh,2.2vw);color:var(--muted);text-align:center;line-height:1.3}
+.info:empty{display:none}
+#count.paused{animation:none;opacity:.55}
+#timeup span.paused{background:var(--warn);color:#1b1200;box-shadow:0 6px 24px rgba(255,176,32,.4)}
+.showchk{display:flex;align-items:center;gap:4px;font-weight:400;margin-top:2px}
+.showchk input{width:16px;height:16px}
 #startBtn{font-size:min(4.5vh,1.8rem);padding:.45em 1.8em;border-radius:14px}
 #startBtn:disabled{opacity:.4;cursor:default}
 #startBtn kbd{font-size:.6em;opacity:.7;margin-left:.6em;border:1px solid currentColor;border-radius:5px;padding:0 .4em}
@@ -99,9 +108,9 @@ td.num{color:var(--muted);width:36px;text-align:end}
   .row{gap:10px 12px}
   .row label input[type=text]{width:100%!important}
   .startbar .btn{width:100%}
-  #run{grid-template-columns:1fr;grid-template-rows:auto 58dvh minmax(0,1fr)}
+  #run{grid-template-columns:1fr;grid-template-rows:auto 62dvh minmax(0,1fr)}
   #run header{grid-column:1;padding:10px 12px 2px}
-  #run header h1{font-size:1.2rem;padding-inline-end:84px;text-align:start}
+  #run header h1{font-size:1.7rem;padding-inline-end:84px;text-align:start}
   #elapsed{top:10px;inset-inline-end:12px;font-size:.75rem}
   #elapsed b{font-size:.95rem}
   #stage{padding:4px 12px}
@@ -110,7 +119,9 @@ td.num{color:var(--muted);width:36px;text-align:end}
   #nameBig{font-size:min(7dvh,9vw)}
   #count{font-size:min(24dvh,42vw)}
   #bar{width:90%;margin:6px 0 10px}
-  #startBtn{font-size:1.2rem;padding:.55em 1.2em;width:92%}
+  #startRow{width:92%}
+  #startBtn{font-size:1.2rem;padding:.55em 1.2em;flex:1}
+  .info{font-size:min(2.6dvh,4vw)}
   #startBtn kbd{display:none}
   .minibar{position:static;margin-top:10px;flex-wrap:wrap;justify-content:center}
   #side{border-inline-start:0;border-top:1px solid var(--line);margin-top:0;padding:10px 12px}
@@ -176,7 +187,8 @@ td.num{color:var(--muted);width:36px;text-align:end}
       <button class="btn sm danger" id="clearBtn" type="button" data-i18n="clr"></button>
     </div>
     <div class="tablewrap"><table id="tbl"></table></div>
-    <p class="stat" style="margin-bottom:0" data-i18n="hint"></p>
+    <p class="stat" style="margin:10px 0 6px" data-i18n="showHint"></p>
+    <p class="stat" style="margin:0" data-i18n="hint"></p>
   </div>
 
   <div class="startbar"><button class="btn primary" id="goBtn" type="button" data-i18n="go"></button></div>
@@ -190,10 +202,15 @@ td.num{color:var(--muted);width:36px;text-align:end}
   </header>
   <section id="stage">
     <div id="timeup"></div>
+    <div id="infoTop" class="info"></div>
     <div id="nameBig"></div>
+    <div id="infoBottom" class="info"></div>
     <div id="count">45</div>
     <div id="bar"><i></i></div>
-    <button id="startBtn" class="btn primary" type="button"></button>
+    <div id="startRow">
+      <button id="startBtn" class="btn primary" type="button"></button>
+      <button id="pauseBtn" class="btn sm" type="button"></button>
+    </div>
     <div class="minibar">
       <button class="btn sm" id="backBtn" type="button" data-i18n="back"></button>
       <button class="btn sm" id="resetBtn" type="button" data-i18n="reset"></button>
@@ -247,7 +264,9 @@ const I18N = {
   done:"全員終了", pick:"スキップされた方を右から選択", nextL:"次の方", prepL:"ご準備ください", nobody:"待機中の方はいません", more:"ほか {n} 人",
   skH:"スキップされた人", in:"出席", over:"時間切れです", back:"← 設定に戻る", reset:"最初からやり直す", fs:"全画面",
   cAbs:"{name}を欠席にしますか？", yes:"はい", no:"いいえ", cClr:"リストを全消去しますか？", cRst:"発表を最初からやり直しますか？（経過時間もリセット）",
-  pCol:"追加する列の名前", noData:"データがありません", unn:"(名前なし)", del:"この行を削除", cName:"名前", cHon:"敬称", cGrp:"クラス", cYear:"卒業年", defT:"同窓会"
+  pCol:"追加する列の名前", noData:"データがありません", unn:"(名前なし)", del:"この行を削除", cName:"名前", cHon:"敬称", cGrp:"クラス", cYear:"卒業年", defT:"同窓会",
+  pause:"一時停止", resume:"再開", paused:"一時停止中", show:"表示",
+  showHint:"各列の「表示」にチェックした項目を、本番画面の発表者の名前まわりに表示します。名前は常にONです。名前の列より左の項目は名前の上に、右の項目は下に出ます。敬称がOFFのときは、標準の敬称を使います。"
 },
 "en": {
   app:"Presentation Timer", sub:"Load a CSV → check attendance and order → press “Go to timer”. Press Space to start each speaker.",
@@ -261,7 +280,9 @@ const I18N = {
   done:"All done", pick:"Pick from the skipped list", nextL:"Next", prepL:"Get ready", nobody:"No one waiting", more:"+{n} more",
   skH:"Skipped", in:"Present", over:"Time's up", back:"← Back to setup", reset:"Restart from the top", fs:"Fullscreen",
   cAbs:"Mark {name} as absent?", yes:"Yes", no:"No", cClr:"Clear the whole list?", cRst:"Restart from the beginning? (elapsed time is reset too)",
-  pCol:"Name of the new column", noData:"No data found.", unn:"(no name)", del:"Delete this row", cName:"Name", cHon:"Honorific", cGrp:"Group", cYear:"Year", defT:"Class Reunion"
+  pCol:"Name of the new column", noData:"No data found.", unn:"(no name)", del:"Delete this row", cName:"Name", cHon:"Honorific", cGrp:"Group", cYear:"Year", defT:"Class Reunion",
+  pause:"Pause", resume:"Resume", paused:"Paused", show:"Show",
+  showHint:"Fields ticked “Show” are displayed around the speaker's name on the timer screen. The name is always on. Fields left of the name column appear above it, fields to the right appear below it. If the honorific is off, the default honorific is used."
 },
 "zh-CN": {
   app:"自我介绍计时器", sub:"导入 CSV → 确认出席和顺序 → 点击“进入计时”。正式开始后按空格键开始每位发言。",
@@ -275,7 +296,9 @@ const I18N = {
   done:"全部结束", pick:"请从右侧跳过名单中选择", nextL:"下一位", prepL:"请准备", nobody:"没有等待的人", more:"另有 {n} 人",
   skH:"已跳过", in:"出席", over:"时间到", back:"← 返回设置", reset:"重新开始", fs:"全屏",
   cAbs:"要将{name}设为缺席吗？", yes:"是", no:"否", cClr:"要清空整个名单吗？", cRst:"要从头重新开始吗？（已用时间也会重置）",
-  pCol:"新列的名称", noData:"没有数据。", unn:"（无姓名）", del:"删除此行", cName:"姓名", cHon:"称谓", cGrp:"班级", cYear:"毕业年份", defT:"同学聚会"
+  pCol:"新列的名称", noData:"没有数据。", unn:"（无姓名）", del:"删除此行", cName:"姓名", cHon:"称谓", cGrp:"班级", cYear:"毕业年份", defT:"同学聚会",
+  pause:"暂停", resume:"继续", paused:"已暂停", show:"显示",
+  showHint:"勾选各列“显示”的项目，会在计时界面的发言者姓名周围显示。姓名始终开启。姓名列左侧的项目显示在姓名上方，右侧的项目显示在下方。称谓关闭时使用默认称谓。"
 },
 "zh-TW": {
   app:"自我介紹計時器", sub:"匯入 CSV → 確認出席與順序 → 按「進入計時」。正式開始後按空白鍵開始每位發言。",
@@ -289,7 +312,9 @@ const I18N = {
   done:"全部結束", pick:"請從右側跳過名單中選擇", nextL:"下一位", prepL:"請準備", nobody:"沒有等待的人", more:"另有 {n} 人",
   skH:"已跳過", in:"出席", over:"時間到", back:"← 返回設定", reset:"重新開始", fs:"全螢幕",
   cAbs:"要將{name}設為缺席嗎？", yes:"是", no:"否", cClr:"要清空整個名單嗎？", cRst:"要從頭重新開始嗎？（已用時間也會重置）",
-  pCol:"新欄位的名稱", noData:"沒有資料。", unn:"（無姓名）", del:"刪除此列", cName:"姓名", cHon:"稱謂", cGrp:"班級", cYear:"畢業年份", defT:"同學會"
+  pCol:"新欄位的名稱", noData:"沒有資料。", unn:"（無姓名）", del:"刪除此列", cName:"姓名", cHon:"稱謂", cGrp:"班級", cYear:"畢業年份", defT:"同學會",
+  pause:"暫停", resume:"繼續", paused:"已暫停", show:"顯示",
+  showHint:"勾選各欄「顯示」的項目，會在計時畫面的發言者姓名周圍顯示。姓名一律開啟。姓名欄左側的項目顯示在姓名上方，右側的項目顯示在下方。稱謂關閉時使用預設稱謂。"
 },
 "hi": {
   app:"परिचय टाइमर", sub:"CSV लोड करें → उपस्थिति और क्रम जाँचें → “टाइमर पर जाएँ” दबाएँ। हर वक्ता को शुरू करने के लिए स्पेस दबाएँ।",
@@ -303,7 +328,9 @@ const I18N = {
   done:"सब पूरा", pick:"छोड़े गए लोगों में से चुनें", nextL:"अगले", prepL:"तैयार रहें", nobody:"कोई प्रतीक्षा में नहीं", more:"+{n} और",
   skH:"छोड़े गए", in:"उपस्थित", over:"समय समाप्त", back:"← सेटअप पर वापस", reset:"शुरू से दोबारा", fs:"पूर्ण स्क्रीन",
   cAbs:"क्या {name} को अनुपस्थित करें?", yes:"हाँ", no:"नहीं", cClr:"पूरी सूची हटाएँ?", cRst:"शुरू से दोबारा करें? (बीता समय भी रीसेट होगा)",
-  pCol:"नए कॉलम का नाम", noData:"कोई डेटा नहीं मिला।", unn:"(बिना नाम)", del:"यह पंक्ति हटाएँ", cName:"नाम", cHon:"सम्मान-सूचक", cGrp:"समूह", cYear:"वर्ष", defT:"पुनर्मिलन समारोह"
+  pCol:"नए कॉलम का नाम", noData:"कोई डेटा नहीं मिला।", unn:"(बिना नाम)", del:"यह पंक्ति हटाएँ", cName:"नाम", cHon:"सम्मान-सूचक", cGrp:"समूह", cYear:"वर्ष", defT:"पुनर्मिलन समारोह",
+  pause:"रोकें", resume:"जारी रखें", paused:"रुका हुआ", show:"दिखाएँ",
+  showHint:"जिन कॉलम में “दिखाएँ” चुना है, वे टाइमर स्क्रीन पर वक्ता के नाम के आसपास दिखते हैं। नाम हमेशा चालू रहता है। नाम वाले कॉलम के बाईं ओर के कॉलम नाम के ऊपर और दाईं ओर के कॉलम नीचे दिखते हैं। सम्मान-सूचक बंद हो तो डिफ़ॉल्ट सम्मान-सूचक इस्तेमाल होता है।"
 },
 "es": {
   app:"Temporizador de presentaciones", sub:"Carga un CSV → revisa asistencia y orden → pulsa «Ir al temporizador». Pulsa Espacio para iniciar a cada persona.",
@@ -317,7 +344,9 @@ const I18N = {
   done:"Todos han terminado", pick:"Elige de la lista de omitidos", nextL:"Siguiente", prepL:"Prepárese", nobody:"Nadie en espera", more:"+{n} más",
   skH:"Omitidos", in:"Presente", over:"¡Se acabó el tiempo!", back:"← Volver a ajustes", reset:"Reiniciar desde el principio", fs:"Pantalla completa",
   cAbs:"¿Marcar a {name} como ausente?", yes:"Sí", no:"No", cClr:"¿Borrar toda la lista?", cRst:"¿Reiniciar desde el principio? (también se reinicia el tiempo transcurrido)",
-  pCol:"Nombre de la nueva columna", noData:"No hay datos.", unn:"(sin nombre)", del:"Eliminar esta fila", cName:"Nombre", cHon:"Tratamiento", cGrp:"Grupo", cYear:"Año", defT:"Reencuentro"
+  pCol:"Nombre de la nueva columna", noData:"No hay datos.", unn:"(sin nombre)", del:"Eliminar esta fila", cName:"Nombre", cHon:"Tratamiento", cGrp:"Grupo", cYear:"Año", defT:"Reencuentro",
+  pause:"Pausa", resume:"Reanudar", paused:"En pausa", show:"Mostrar",
+  showHint:"Los campos marcados con «Mostrar» aparecen junto al nombre del orador en la pantalla del temporizador. El nombre siempre está activado. Los campos a la izquierda de la columna del nombre aparecen encima y los de la derecha, debajo. Si el tratamiento está desactivado, se usa el tratamiento por defecto."
 },
 "fr": {
   app:"Minuteur de présentation", sub:"Chargez un CSV → vérifiez présences et ordre → cliquez sur « Aller au minuteur ». Appuyez sur Espace pour lancer chaque intervenant.",
@@ -331,7 +360,9 @@ const I18N = {
   done:"Tout le monde est passé", pick:"Choisissez dans la liste des sautés", nextL:"Suivant", prepL:"Préparez-vous", nobody:"Personne en attente", more:"+{n} de plus",
   skH:"Sautés", in:"Présent", over:"Temps écoulé !", back:"← Retour aux réglages", reset:"Recommencer depuis le début", fs:"Plein écran",
   cAbs:"Marquer {name} comme absent(e) ?", yes:"Oui", no:"Non", cClr:"Effacer toute la liste ?", cRst:"Recommencer depuis le début ? (le temps écoulé est aussi réinitialisé)",
-  pCol:"Nom de la nouvelle colonne", noData:"Aucune donnée.", unn:"(sans nom)", del:"Supprimer cette ligne", cName:"Nom", cHon:"Civilité", cGrp:"Groupe", cYear:"Année", defT:"Retrouvailles"
+  pCol:"Nom de la nouvelle colonne", noData:"Aucune donnée.", unn:"(sans nom)", del:"Supprimer cette ligne", cName:"Nom", cHon:"Civilité", cGrp:"Groupe", cYear:"Année", defT:"Retrouvailles",
+  pause:"Pause", resume:"Reprendre", paused:"En pause", show:"Afficher",
+  showHint:"Les champs cochés « Afficher » apparaissent autour du nom de l’intervenant sur l’écran du minuteur. Le nom est toujours activé. Les champs à gauche de la colonne du nom s’affichent au-dessus, ceux de droite en dessous. Si la civilité est désactivée, la civilité par défaut est utilisée."
 },
 "ar": {
   app:"مؤقّت التعريف بالنفس", sub:"حمّل ملف CSV ← راجع الحضور والترتيب ← اضغط «الانتقال إلى المؤقّت». اضغط مفتاح المسافة لبدء كل متحدث.",
@@ -345,7 +376,9 @@ const I18N = {
   done:"انتهى الجميع", pick:"اختر من قائمة المتجاوَزين", nextL:"التالي", prepL:"استعد", nobody:"لا أحد في الانتظار", more:"+{n} آخرون",
   skH:"تم تجاوزهم", in:"حاضر", over:"انتهى الوقت", back:"→ العودة إلى الإعدادات", reset:"البدء من جديد", fs:"ملء الشاشة",
   cAbs:"هل تريد تسجيل {name} كغائب؟", yes:"نعم", no:"لا", cClr:"هل تريد مسح القائمة بالكامل؟", cRst:"هل تريد البدء من جديد؟ (سيُعاد ضبط الوقت المنقضي أيضًا)",
-  pCol:"اسم العمود الجديد", noData:"لا توجد بيانات.", unn:"(بلا اسم)", del:"حذف هذا الصف", cName:"الاسم", cHon:"اللقب", cGrp:"المجموعة", cYear:"السنة", defT:"لمّ الشمل"
+  pCol:"اسم العمود الجديد", noData:"لا توجد بيانات.", unn:"(بلا اسم)", del:"حذف هذا الصف", cName:"الاسم", cHon:"اللقب", cGrp:"المجموعة", cYear:"السنة", defT:"لمّ الشمل",
+  pause:"إيقاف مؤقت", resume:"استئناف", paused:"متوقف مؤقتًا", show:"عرض",
+  showHint:"تظهر الحقول المحددة بـ«عرض» حول اسم المتحدث في شاشة المؤقّت. الاسم مفعّل دائمًا. تظهر الحقول الواقعة قبل عمود الاسم فوقه، والواقعة بعده تحته. إذا أُلغي اللقب يُستخدم اللقب الافتراضي."
 },
 "bn": {
   app:"পরিচিতি টাইমার", sub:"CSV লোড করুন → উপস্থিতি ও ক্রম দেখে নিন → “টাইমারে যান” চাপুন। প্রত্যেক বক্তাকে শুরু করতে স্পেস চাপুন।",
@@ -359,7 +392,9 @@ const I18N = {
   done:"সবাই শেষ", pick:"বাদ পড়াদের তালিকা থেকে বেছে নিন", nextL:"পরের জন", prepL:"প্রস্তুত থাকুন", nobody:"কেউ অপেক্ষায় নেই", more:"আরও {n} জন",
   skH:"বাদ পড়েছেন", in:"উপস্থিত", over:"সময় শেষ", back:"← সেটআপে ফিরুন", reset:"আবার প্রথম থেকে", fs:"ফুলস্ক্রিন",
   cAbs:"{name} কে অনুপস্থিত করবেন?", yes:"হ্যাঁ", no:"না", cClr:"পুরো তালিকা মুছবেন?", cRst:"প্রথম থেকে আবার শুরু করবেন? (অতিবাহিত সময়ও রিসেট হবে)",
-  pCol:"নতুন কলামের নাম", noData:"কোনো ডেটা নেই।", unn:"(নামহীন)", del:"এই সারি মুছুন", cName:"নাম", cHon:"সম্বোধন", cGrp:"দল", cYear:"বছর", defT:"পুনর্মিলনী"
+  pCol:"নতুন কলামের নাম", noData:"কোনো ডেটা নেই।", unn:"(নামহীন)", del:"এই সারি মুছুন", cName:"নাম", cHon:"সম্বোধন", cGrp:"দল", cYear:"বছর", defT:"পুনর্মিলনী",
+  pause:"বিরতি", resume:"আবার শুরু", paused:"বিরতিতে", show:"দেখান",
+  showHint:"“দেখান” টিক দেওয়া ফিল্ডগুলো টাইমার স্ক্রিনে বক্তার নামের আশেপাশে দেখা যায়। নাম সবসময় চালু থাকে। নামের কলামের বাঁয়ের ফিল্ড নামের উপরে এবং ডানের ফিল্ড নিচে দেখা যায়। সম্বোধন বন্ধ থাকলে ডিফল্ট সম্বোধন ব্যবহৃত হয়।"
 },
 "pt": {
   app:"Cronômetro de apresentações", sub:"Carregue um CSV → confira presença e ordem → clique em “Ir para o cronômetro”. Pressione Espaço para iniciar cada pessoa.",
@@ -373,7 +408,9 @@ const I18N = {
   done:"Todos concluíram", pick:"Escolha na lista dos pulados", nextL:"Próximo", prepL:"Prepare-se", nobody:"Ninguém aguardando", more:"+{n} mais",
   skH:"Pulados", in:"Presente", over:"Tempo esgotado!", back:"← Voltar às configurações", reset:"Recomeçar do início", fs:"Tela cheia",
   cAbs:"Marcar {name} como ausente?", yes:"Sim", no:"Não", cClr:"Limpar a lista inteira?", cRst:"Recomeçar do início? (o tempo decorrido também será zerado)",
-  pCol:"Nome da nova coluna", noData:"Nenhum dado.", unn:"(sem nome)", del:"Excluir esta linha", cName:"Nome", cHon:"Tratamento", cGrp:"Grupo", cYear:"Ano", defT:"Reencontro"
+  pCol:"Nome da nova coluna", noData:"Nenhum dado.", unn:"(sem nome)", del:"Excluir esta linha", cName:"Nome", cHon:"Tratamento", cGrp:"Grupo", cYear:"Ano", defT:"Reencontro",
+  pause:"Pausar", resume:"Retomar", paused:"Pausado", show:"Mostrar",
+  showHint:"Os campos marcados em “Mostrar” aparecem em volta do nome do apresentador na tela do cronômetro. O nome está sempre ativado. Campos à esquerda da coluna do nome aparecem acima dele e os da direita, abaixo. Com o tratamento desativado, usa-se o tratamento padrão."
 },
 "ru": {
   app:"Таймер выступлений", sub:"Загрузите CSV → проверьте присутствие и порядок → нажмите «К таймеру». Пробел запускает каждого выступающего.",
@@ -387,7 +424,9 @@ const I18N = {
   done:"Все выступили", pick:"Выберите из пропущенных", nextL:"Следующий", prepL:"Приготовьтесь", nobody:"Никто не ждёт", more:"ещё {n}",
   skH:"Пропущенные", in:"Присутств.", over:"Время вышло!", back:"← К настройкам", reset:"Начать сначала", fs:"Во весь экран",
   cAbs:"Отметить {name} как отсутствующего?", yes:"Да", no:"Нет", cClr:"Очистить весь список?", cRst:"Начать сначала? (прошедшее время тоже сбросится)",
-  pCol:"Название нового столбца", noData:"Данных нет.", unn:"(без имени)", del:"Удалить строку", cName:"Имя", cHon:"Обращение", cGrp:"Группа", cYear:"Год", defT:"Встреча выпускников"
+  pCol:"Название нового столбца", noData:"Данных нет.", unn:"(без имени)", del:"Удалить строку", cName:"Имя", cHon:"Обращение", cGrp:"Группа", cYear:"Год", defT:"Встреча выпускников",
+  pause:"Пауза", resume:"Продолжить", paused:"Пауза", show:"Показ.",
+  showHint:"Поля, отмеченные «Показ.», выводятся вокруг имени выступающего на экране таймера. Имя включено всегда. Поля слева от столбца имени отображаются над ним, справа — под ним. Если обращение выключено, используется обращение по умолчанию."
 },
 "id": {
   app:"Timer Presentasi", sub:"Muat CSV → periksa kehadiran & urutan → tekan “Ke timer”. Tekan Spasi untuk memulai tiap pembicara.",
@@ -401,7 +440,9 @@ const I18N = {
   done:"Semua selesai", pick:"Pilih dari daftar yang dilewati", nextL:"Berikutnya", prepL:"Bersiaplah", nobody:"Tidak ada yang menunggu", more:"+{n} lagi",
   skH:"Dilewati", in:"Hadir", over:"Waktu habis!", back:"← Kembali ke pengaturan", reset:"Ulangi dari awal", fs:"Layar penuh",
   cAbs:"Tandai {name} sebagai tidak hadir?", yes:"Ya", no:"Tidak", cClr:"Hapus seluruh daftar?", cRst:"Ulangi dari awal? (waktu berlalu juga direset)",
-  pCol:"Nama kolom baru", noData:"Tidak ada data.", unn:"(tanpa nama)", del:"Hapus baris ini", cName:"Nama", cHon:"Sapaan", cGrp:"Kelompok", cYear:"Tahun", defT:"Reuni"
+  pCol:"Nama kolom baru", noData:"Tidak ada data.", unn:"(tanpa nama)", del:"Hapus baris ini", cName:"Nama", cHon:"Sapaan", cGrp:"Kelompok", cYear:"Tahun", defT:"Reuni",
+  pause:"Jeda", resume:"Lanjut", paused:"Dijeda", show:"Tampil",
+  showHint:"Kolom yang dicentang “Tampil” ditampilkan di sekitar nama pembicara pada layar timer. Nama selalu aktif. Kolom di kiri kolom nama muncul di atasnya, kolom di kanan muncul di bawahnya. Jika sapaan dimatikan, dipakai sapaan default."
 },
 "de": {
   app:"Vorstellungs-Timer", sub:"CSV laden → Anwesenheit und Reihenfolge prüfen → „Zum Timer“ klicken. Mit der Leertaste startet jede Person.",
@@ -415,7 +456,9 @@ const I18N = {
   done:"Alle fertig", pick:"Aus den Übersprungenen wählen", nextL:"Als Nächstes", prepL:"Bitte bereithalten", nobody:"Niemand wartet", more:"+{n} weitere",
   skH:"Übersprungen", in:"Anwesend", over:"Zeit abgelaufen!", back:"← Zurück zu den Einstellungen", reset:"Von vorn beginnen", fs:"Vollbild",
   cAbs:"{name} als abwesend markieren?", yes:"Ja", no:"Nein", cClr:"Gesamte Liste löschen?", cRst:"Von vorn beginnen? (Die vergangene Zeit wird ebenfalls zurückgesetzt)",
-  pCol:"Name der neuen Spalte", noData:"Keine Daten.", unn:"(ohne Namen)", del:"Diese Zeile löschen", cName:"Name", cHon:"Anrede", cGrp:"Gruppe", cYear:"Jahr", defT:"Klassentreffen"
+  pCol:"Name der neuen Spalte", noData:"Keine Daten.", unn:"(ohne Namen)", del:"Diese Zeile löschen", cName:"Name", cHon:"Anrede", cGrp:"Gruppe", cYear:"Jahr", defT:"Klassentreffen",
+  pause:"Pause", resume:"Fortsetzen", paused:"Pausiert", show:"Zeigen",
+  showHint:"Mit „Zeigen“ markierte Felder erscheinen auf dem Timer-Bildschirm rund um den Namen der Person. Der Name ist immer aktiv. Felder links der Namensspalte stehen über dem Namen, Felder rechts darunter. Ist die Anrede aus, gilt die Standard-Anrede."
 },
 "ko": {
   app:"자기소개 타이머", sub:"CSV 불러오기 → 출석과 순서 확인 → ‘타이머로 이동’ 클릭. 스페이스 키로 각 발표자를 시작합니다.",
@@ -429,7 +472,9 @@ const I18N = {
   done:"모두 종료", pick:"건너뛴 사람 중에서 선택", nextL:"다음 분", prepL:"준비해 주세요", nobody:"대기 중인 사람이 없습니다", more:"외 {n}명",
   skH:"건너뛴 사람", in:"출석", over:"시간 종료", back:"← 설정으로", reset:"처음부터 다시", fs:"전체 화면",
   cAbs:"{name}을(를) 결석 처리할까요?", yes:"예", no:"아니요", cClr:"목록을 모두 지울까요?", cRst:"처음부터 다시 시작할까요? (경과 시간도 초기화됩니다)",
-  pCol:"추가할 열 이름", noData:"데이터가 없습니다.", unn:"(이름 없음)", del:"이 행 삭제", cName:"이름", cHon:"호칭", cGrp:"반", cYear:"졸업 연도", defT:"동창회"
+  pCol:"추가할 열 이름", noData:"데이터가 없습니다.", unn:"(이름 없음)", del:"이 행 삭제", cName:"이름", cHon:"호칭", cGrp:"반", cYear:"졸업 연도", defT:"동창회",
+  pause:"일시정지", resume:"재개", paused:"일시정지 중", show:"표시",
+  showHint:"‘표시’를 체크한 항목은 타이머 화면의 발표자 이름 주변에 표시됩니다. 이름은 항상 켜져 있습니다. 이름 열보다 왼쪽 항목은 이름 위에, 오른쪽 항목은 아래에 나옵니다. 호칭을 끄면 기본 호칭을 사용합니다."
 },
 "tr": {
   app:"Tanıtım Zamanlayıcısı", sub:"CSV yükleyin → katılım ve sırayı kontrol edin → “Zamanlayıcıya git”e basın. Her konuşmacıyı başlatmak için Boşluk tuşuna basın.",
@@ -443,7 +488,9 @@ const I18N = {
   done:"Hepsi bitti", pick:"Atlananlar listesinden seçin", nextL:"Sıradaki", prepL:"Hazırlanın", nobody:"Bekleyen yok", more:"+{n} kişi daha",
   skH:"Atlananlar", in:"Katılıyor", over:"Süre doldu!", back:"← Ayarlara dön", reset:"Baştan başla", fs:"Tam ekran",
   cAbs:"{name} kişisini yok olarak işaretleyelim mi?", yes:"Evet", no:"Hayır", cClr:"Tüm liste silinsin mi?", cRst:"Baştan başlansın mı? (geçen süre de sıfırlanır)",
-  pCol:"Yeni sütunun adı", noData:"Veri yok.", unn:"(isimsiz)", del:"Bu satırı sil", cName:"İsim", cHon:"Hitap", cGrp:"Grup", cYear:"Yıl", defT:"Mezunlar Buluşması"
+  pCol:"Yeni sütunun adı", noData:"Veri yok.", unn:"(isimsiz)", del:"Bu satırı sil", cName:"İsim", cHon:"Hitap", cGrp:"Grup", cYear:"Yıl", defT:"Mezunlar Buluşması",
+  pause:"Duraklat", resume:"Devam", paused:"Duraklatıldı", show:"Göster",
+  showHint:"“Göster” işaretli alanlar, zamanlayıcı ekranında konuşmacının isminin çevresinde görünür. İsim her zaman açıktır. İsim sütununun solundaki alanlar ismin üstünde, sağındakiler altında görünür. Hitap kapalıysa varsayılan hitap kullanılır."
 },
 "vi": {
   app:"Bộ hẹn giờ giới thiệu", sub:"Tải CSV → kiểm tra điểm danh và thứ tự → bấm “Vào bộ hẹn giờ”. Nhấn Space để bắt đầu từng người.",
@@ -457,7 +504,9 @@ const I18N = {
   done:"Tất cả đã xong", pick:"Chọn từ danh sách bị bỏ qua", nextL:"Tiếp theo", prepL:"Xin chuẩn bị", nobody:"Không có ai đang chờ", more:"+{n} người nữa",
   skH:"Bị bỏ qua", in:"Có mặt", over:"Hết giờ!", back:"← Quay lại cài đặt", reset:"Bắt đầu lại từ đầu", fs:"Toàn màn hình",
   cAbs:"Đánh dấu {name} là vắng mặt?", yes:"Có", no:"Không", cClr:"Xóa toàn bộ danh sách?", cRst:"Bắt đầu lại từ đầu? (thời gian đã trôi qua cũng được đặt lại)",
-  pCol:"Tên cột mới", noData:"Không có dữ liệu.", unn:"(không tên)", del:"Xóa dòng này", cName:"Tên", cHon:"Danh xưng", cGrp:"Nhóm", cYear:"Năm", defT:"Họp lớp"
+  pCol:"Tên cột mới", noData:"Không có dữ liệu.", unn:"(không tên)", del:"Xóa dòng này", cName:"Tên", cHon:"Danh xưng", cGrp:"Nhóm", cYear:"Năm", defT:"Họp lớp",
+  pause:"Tạm dừng", resume:"Tiếp tục", paused:"Đã tạm dừng", show:"Hiện",
+  showHint:"Các trường được tích “Hiện” sẽ hiển thị quanh tên người nói trên màn hình hẹn giờ. Tên luôn bật. Trường nằm bên trái cột tên hiện phía trên tên, bên phải hiện phía dưới. Nếu tắt danh xưng, sẽ dùng danh xưng mặc định."
 }
 };
 
@@ -506,15 +555,16 @@ const state = {
   lang: "ja",
   s: { title: "同窓会", dur: 45, hon: "さん", honPos: null, nameCol: 0, titleCol: -1, sortCol: -1, sortDir: 1 },
   cols: ["名前", "敬称"],
+  show: [true, true],
   people: [],
   run: freshRun()
 };
 function freshRun() {
-  return { queue: [], skipped: [], done: [], cur: null, endAt: 0, dur: 0, startedAt: 0 };
+  return { queue: [], skipped: [], done: [], cur: null, endAt: 0, dur: 0, startedAt: 0, paused: false, pausedRemain: 0 };
 }
 
 function save() {
-  try { localStorage.setItem(LS_KEY, JSON.stringify({ s: state.s, cols: state.cols, people: state.people, run: state.run, view: state.view, muted: state.muted, lang: state.lang, uid })); } catch (e) {}
+  try { localStorage.setItem(LS_KEY, JSON.stringify({ s: state.s, cols: state.cols, people: state.people, run: state.run, view: state.view, muted: state.muted, lang: state.lang, show: state.show, uid })); } catch (e) {}
 }
 function load() {
   try {
@@ -524,6 +574,7 @@ function load() {
     state.run = Object.assign(freshRun(), d.run); state.view = d.view || "setup";
     state.muted = !!d.muted; uid = d.uid || uid;
     state.lang = LANGS[d.lang] ? d.lang : "ja";
+    state.show = Array.isArray(d.show) && d.show.length === state.cols.length ? d.show : defaultShow();
     return true;
   } catch (e) {}
   return false;
@@ -569,6 +620,7 @@ function importRows(rows) {
   state.s.nameCol = ni >= 0 ? ni : 0;
   state.s.titleCol = find(/^(敬称|呼称|title|honorific|敬稱|稱謂|称谓|título|titulo|titre|civilité|anrede|titel|обращение|звание|gelar|sapaan|호칭|존칭|hitap|ünvan|danh xưng|لقب|उपाधि|सम्मान-सूचक|সম্বোধন)$/i);
   state.s.sortCol = -1;
+  state.show = defaultShow();
   state.run = freshRun();
   render();
 }
@@ -602,7 +654,7 @@ function byId(id) { return state.people.find(p => p.id === id); }
 function nameOf(p) {
   const s = state.s;
   const name = (p.vals[s.nameCol] || "").trim() || t("unn");
-  const custom = s.titleCol >= 0 ? (p.vals[s.titleCol] || "").trim() : "";
+  const custom = s.titleCol >= 0 && state.show[s.titleCol] ? (p.vals[s.titleCol] || "").trim() : "";
   return { name, hon: custom || s.hon, before: effPos() === "before" };
 }
 function fullName(p) {
@@ -610,6 +662,18 @@ function fullName(p) {
   if (!n.hon) return n.name;
   const sp = langMeta().sp ? " " : "";
   return n.before ? n.hon + sp + n.name : n.name + sp + n.hon;
+}
+// 本番画面に表示する列の初期値: 名前・敬称・ふりがな
+function defaultShow() {
+  const s = state.s, kana = /^(ふりがな|フリガナ|よみ|読み|kana|furigana|reading)$/i;
+  return state.cols.map((c, i) => i === s.nameCol || i === s.titleCol || kana.test(String(c).trim()));
+}
+// 名前の上（名前列より左）／下（右）に出す補助項目
+function extraInfo(p, before) {
+  const s = state.s;
+  return state.cols.map((c, i) => i)
+    .filter(i => state.show[i] && i !== s.nameCol && i !== s.titleCol && (before ? i < s.nameCol : i > s.nameCol))
+    .map(i => (p.vals[i] || "").trim()).filter(Boolean).join(" ・ ");
 }
 function fmtClock(sec) {
   sec = Math.max(0, Math.floor(sec));
@@ -645,7 +709,11 @@ function renderTable() {
     return;
   }
   tb.append(h("tr", {}, h("th", {}, t("thIn")), h("th", {}, "#"),
-    state.cols.map(c => h("th", {}, c)), h("th", {}, "")));
+    state.cols.map((c, i) => h("th", {}, h("div", {}, c),
+      h("label", { class: "showchk", title: t("show") },
+        h("input", { type: "checkbox", checked: !!state.show[i], disabled: i === state.s.nameCol,
+          onchange: e => { state.show[i] = e.target.checked; save(); } }), t("show")))),
+    h("th", {}, "")));
   let n = 0;
   state.people.forEach(p => {
     if (p.present) n++;
@@ -729,7 +797,7 @@ function beep(when, freq, dur, vol, type) {
   o.connect(g).connect(bus); o.start(when); o.stop(when + dur + 0.02);
 }
 function playTick() { beep(ctx.currentTime, 1100, 0.05, 0.5, "square"); }
-function playPips() { const t = ctx.currentTime; for (let i = 0; i < 20; i++) beep(t + i * 0.15, 2200, 0.07, 0.35, "square"); }
+function playPips(sec) { const t = ctx.currentTime, n = Math.ceil((sec || 3) / 0.15); for (let i = 0; i < n; i++) beep(t + i * 0.15, 2200, 0.07, 0.35, "square"); }
 function playBoom() {
   const t = ctx.currentTime;
   const src = ctx.createBufferSource(); src.buffer = noiseBuf;
@@ -781,7 +849,7 @@ function startSpeaker(id) {
   }
   if (r.cur) r.done.push(r.cur);
   r.cur = target;
-  r.dur = state.s.dur; r.endAt = Date.now() + r.dur * 1000;
+  r.dur = state.s.dur; r.endAt = Date.now() + r.dur * 1000; r.paused = false;
   if (!r.startedAt) r.startedAt = Date.now();
   lastSec = null; timeUp = false;
   newBus(); playClaps();
@@ -795,13 +863,13 @@ function updateClock() {
     cnt.textContent = fmtCount(state.s.dur); cnt.className = ""; bar.className = ""; bar.firstElementChild.style.transform = "scaleX(1)";
     return;
   }
-  const remMs = Math.max(0, r.endAt - Date.now());
+  const remMs = r.paused ? r.pausedRemain : Math.max(0, r.endAt - Date.now());
   const sec = Math.ceil(remMs / 1000);
   cnt.textContent = fmtCount(sec);
   const cls = sec === 0 ? "over" : sec <= 3 ? "crit" : sec <= 10 ? "low" : "";
-  cnt.className = cls; bar.className = cls;
+  cnt.className = cls + (r.paused ? " paused" : ""); bar.className = cls;
   bar.firstElementChild.style.transform = `scaleX(${remMs / (r.dur * 1000)})`;
-  if (sec !== lastSec && ctx && !state.muted) {
+  if (sec !== lastSec && ctx && !state.muted && !r.paused) {
     if (sec <= 10 && sec > 3) playTick();
     else if (sec === 3) playPips();
     else if (sec === 0 && !timeUp) playBoom();
@@ -812,7 +880,26 @@ function updateClock() {
 function fmtCount(sec) { return sec >= 60 ? Math.floor(sec / 60) + ":" + String(sec % 60).padStart(2, "0") : String(sec); }
 function renderTimeUp() {
   const r = state.run, el = $("timeup"); el.innerHTML = "";
-  if (r.cur && Date.now() >= r.endAt) el.append(h("span", {}, t("over")));
+  const over = r.cur && !r.paused && Date.now() >= r.endAt;
+  if (r.cur && r.paused) el.append(h("span", { class: "paused" }, t("paused")));
+  else if (over) el.append(h("span", {}, t("over")));
+  $("pauseBtn").disabled = !r.cur || over;
+}
+function togglePause() {
+  const r = state.run;
+  if (!r.cur) return;
+  if (!r.paused) {
+    const rem = r.endAt - Date.now();
+    if (rem <= 0) return;
+    r.paused = true; r.pausedRemain = rem;
+    if (bus) bus.gain.setTargetAtTime(0, ctx.currentTime, 0.01);   // 予約済みのピピピ音なども止める
+  } else {
+    r.paused = false; r.endAt = Date.now() + r.pausedRemain;
+    audio(); newBus();
+    const sec = Math.ceil(r.pausedRemain / 1000); lastSec = sec;
+    if (sec <= 3 && sec > 0 && !state.muted) playPips(r.pausedRemain / 1000);
+  }
+  save(); renderRun(); updateClock();
 }
 
 function renderRun() {
@@ -828,7 +915,10 @@ function renderRun() {
     const hon = n.hon ? h("small", { class: n.before ? "pre" : "post" }, n.hon) : "";
     nb.append(...(n.before ? [hon, n.name] : [n.name, hon]));
   } else nb.append(dim(r.queue.length ? t("ready") : t("noOne")));
+  $("infoTop").textContent = cp ? extraInfo(cp, true) : "";
+  $("infoBottom").textContent = cp ? extraInfo(cp, false) : "";
   renderTimeUp();
+  $("pauseBtn").textContent = t(r.paused ? "resume" : "pause");
   const sb = $("startBtn"); sb.innerHTML = "";
   if (r.queue.length) { sb.disabled = false; sb.append(r.cur ? t("next") : t("start"), h("kbd", {}, "Space")); }
   else { sb.disabled = true; sb.append(r.skipped.length ? t("pick") : (r.cur ? t("done") : t("start"))); }
@@ -898,6 +988,7 @@ function sampleCSV() {
   importRows([[t("cName"), t("cHon"), t("cGrp"), t("cYear")],
     ...names.map((n, i) => [n, "", groups[i % 3], "2001"])]);
   state.s.nameCol = 0; state.s.titleCol = 1;
+  state.show = defaultShow();
   render();
 }
 
@@ -914,8 +1005,8 @@ function render() {
 $("setTitle").oninput = e => { state.s.title = e.target.value; save(); };
 $("setDur").oninput = e => { const v = parseInt(e.target.value, 10); if (v > 0) { state.s.dur = v; save(); } };
 $("setHon").oninput = e => { state.s.hon = e.target.value; save(); };
-$("setNameCol").onchange = e => { state.s.nameCol = +e.target.value; save(); };
-$("setTitleCol").onchange = e => { state.s.titleCol = +e.target.value; save(); };
+$("setNameCol").onchange = e => { state.s.nameCol = +e.target.value; state.show[state.s.nameCol] = true; save(); renderSetup(); };
+$("setTitleCol").onchange = e => { state.s.titleCol = +e.target.value; if (state.s.titleCol >= 0) state.show[state.s.titleCol] = true; save(); renderSetup(); };
 $("sortCol").onchange = e => { state.s.sortCol = +e.target.value; applySort(); save(); renderTable(); };
 $("sortDir").onchange = e => { state.s.sortDir = +e.target.value; applySort(); save(); renderTable(); };
 $("muteBtn").onclick = () => { state.muted = !state.muted; $("muteBtn").textContent = t(state.muted ? "soundOff" : "soundOn"); save(); };
@@ -940,7 +1031,7 @@ $("exportBtn").onclick = () => {
 $("addRowBtn").onclick = () => { state.people.push({ id: newId(), vals: state.cols.map(() => ""), present: true }); save(); renderTable(); };
 $("addColBtn").onclick = () => {
   const name = prompt(t("pCol")); if (!name) return;
-  state.cols.push(name); state.people.forEach(p => p.vals.push("")); save(); renderSetup();
+  state.cols.push(name); state.show.push(false); state.people.forEach(p => p.vals.push("")); save(); renderSetup();
 };
 $("allPresentBtn").onclick = () => { state.people.forEach(p => p.present = true); save(); renderTable(); };
 $("clearBtn").onclick = () => confirmModal(t("cClr"), () => { state.people = []; state.run = freshRun(); save(); renderTable(); });
@@ -953,6 +1044,7 @@ $("resetBtn").onclick = () => confirmModal(t("cRst"), () => {
 });
 $("fsBtn").onclick = () => { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {}); };
 $("startBtn").onclick = e => { e.currentTarget.blur(); startSpeaker(); };
+$("pauseBtn").onclick = e => { e.currentTarget.blur(); togglePause(); };
 
 const isSpace = e => e.code === "Space" || e.key === " ";
 document.addEventListener("keydown", e => {
@@ -969,6 +1061,8 @@ if (!load()) {
   state.lang = detectLang();
   state.s.title = t("defT"); state.s.hon = LANGS[state.lang].hon;
   state.cols = [t("cName"), t("cHon")];
+  state.s.titleCol = 1;
+  state.show = defaultShow();
 }
 render();
 </script>
